@@ -1,8 +1,10 @@
-# Doll Trap — Seattle Underground Idol Group
+# Pixipi — Seattle Virtual Idol Group
 
-Fan club website with admin panel for event and photo management.
+Official fan club website for **Pixipi**, a Seattle-based virtual idol group with a Win98 dreamcore / Tamagotchi aesthetic.
 
 **Stack:** GitHub Pages (frontend) · Cloudflare Workers + D1 (backend + database) · Supabase Storage (images)
+
+> Note: The Cloudflare worker and D1 database still use legacy `dolltrap` identifiers in their infrastructure names (`api.dolltrap.workers.dev`, `dolltrap-db`). These are production values and safe to ignore from a branding perspective.
 
 Events and albums share the same `events` table, distinguished by `kind = 'event' | 'album'`. The calendar and home page only show `kind = 'event'`; the gallery and admin can also manage albums.
 
@@ -18,10 +20,11 @@ dolltrap.github.io/
 │   ├── calendar.html         # Event calendar
 │   ├── gallery.html          # Photo gallery / albums
 │   ├── videos.html           # Videos page
+│   ├── contact.html          # Contact page
 │   ├── event.html            # Event detail page
 │   ├── portal.html           # Member portal (login, saved events/photos)
 │   ├── admin.html            # Admin panel
-│   ├── style.css             # Global styles
+│   ├── style.css             # Global styles (Win98 dreamcore design system)
 │   ├── admin.css             # Admin panel styles
 │   └── admin.js              # Admin panel logic
 │
@@ -84,7 +87,7 @@ In a second terminal:
 cd docs && python3 -m http.server 3000
 ```
 
-Open **http://localhost:3000/admin.html**. The frontend auto-detects `localhost` and points to `localhost:8787`.
+Open **http://localhost:3000**. The frontend auto-detects `localhost` and points to `localhost:8787`.
 
 ### 4. Test it's running
 
@@ -229,4 +232,4 @@ cd worker && npx wrangler deploy
 
 ---
 
-*Property of Doll Trap. All rights reserved.*
+*© Pixipi. All rights reserved.*

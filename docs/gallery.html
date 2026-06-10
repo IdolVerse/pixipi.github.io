@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gallery - Doll Trap</title>
+    <title>Gallery - Pixipi</title>
     <link rel="stylesheet" href="style.css">
   </head>
 
@@ -30,7 +30,7 @@
           <button class="filter-btn active" onclick="filterByMember('')">All Members</button>
           <button class="filter-btn" onclick="filterByMember('Buzzly')">Buzzly</button>
           <button class="filter-btn" onclick="filterByMember('Kokona')">Kokona</button>
-          <button class="filter-btn" onclick="filterByMember('Hitomi')">Hitomi</button>
+          
           <button class="filter-btn" onclick="filterByMember('Group')">Group</button>
         </div>
       </div>
@@ -58,14 +58,16 @@
         <div id="albumGrid" class="gallery-grid"></div>
       </div>
 
-      <footer>
-        Follow Doll Trap on
-        <a href="https://www.instagram.com/kyk_doll_trap?igsh=MWR5ZDhnNTRvdjA4ZQ==" target="_blank" rel="noopener noreferrer">Instagram</a>
-        <span>·</span>
-        <a href="https://xhslink.com/m/AtFuH3oz3Lz" target="_blank" rel="noopener noreferrer">RedNote</a>
-        <span>·</span>
-        <a href="https://youtube.com/@ksm_doll_trap?si=y9Q1hdPEBzB3alXG" target="_blank" rel="noopener noreferrer">YouTube</a>
-      </footer>
+    </div><!-- /.gallery-container -->
+
+    <footer>
+      Follow Pixipi on
+      <a href="https://www.instagram.com/pixipi_exe?igsh=MWR5ZDhnNTRvdjA4ZQ==" target="_blank" rel="noopener noreferrer">Instagram</a>
+      <span>·</span>
+      <a href="https://xhslink.com/m/AtFuH3oz3Lz" target="_blank" rel="noopener noreferrer">RedNote</a>
+      <span>·</span>
+      <a href="https://youtube.com/@ksm_doll_trap?si=y9Q1hdPEBzB3alXG" target="_blank" rel="noopener noreferrer">YouTube</a>
+    </footer>
 
     <!-- Image Zoom Modal -->
     <div id="imageModal" class="image-modal">
@@ -98,16 +100,16 @@
           const p = parseJwt(adminTok);
           btn.textContent = '⚙️ ' + (p?.username || 'Admin');
           btn.href = 'admin.html';
-          btn.style.background = 'linear-gradient(135deg, #7c3aed, #ec4899)';
+          btn.style.background = 'linear-gradient(90deg, #9b7fd4, #c4a8e8)';
         } else if (memberTok) {
           const p = parseJwt(memberTok);
           btn.textContent = '🎀 ' + (p?.display_name || 'Portal');
           btn.href = 'portal.html';
-          btn.style.background = 'linear-gradient(135deg, #d946a6, #ec4899)';
+          btn.style.background = 'linear-gradient(90deg, #9b7fd4, #c4a8e8)';
         } else {
           btn.textContent = '🔑 Log In';
           btn.href = 'portal.html';
-          btn.style.background = 'linear-gradient(135deg, #d946a6, #ec4899)';
+          btn.style.background = '';
         }
       }
 

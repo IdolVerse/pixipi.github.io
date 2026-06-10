@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Videos - Doll Trap</title>
+    <title>Videos - Pixipi</title>
     <link rel="stylesheet" href="style.css">
     <style>
       /* ── Retro Video Window ── */
@@ -220,7 +220,7 @@
     <div id="videoPlayerModal">
       <div class="vw-window">
         <div class="vw-bar">
-          <span class="vw-title">Doll Trap</span>
+          <span class="vw-title">Pixipi</span>
           <div class="vw-btns">
             <button class="vw-btn">□</button>
             <button class="vw-btn">—</button>
@@ -252,8 +252,8 @@
     </div>
 
     <footer>
-      Follow Doll Trap on
-      <a href="https://www.instagram.com/kyk_doll_trap?igsh=MWR5ZDhnNTRvdjA4ZQ==" target="_blank" rel="noopener noreferrer">Instagram</a>
+      Follow Pixipi on
+      <a href="https://www.instagram.com/pixipi_exe?igsh=MWR5ZDhnNTRvdjA4ZQ==" target="_blank" rel="noopener noreferrer">Instagram</a>
       <span>·</span>
       <a href="https://xhslink.com/m/AtFuH3oz3Lz" target="_blank" rel="noopener noreferrer">RedNote</a>
       <span>·</span>
@@ -280,16 +280,16 @@
           const p = parseJwt(adminTok);
           btn.textContent = '⚙️ ' + (p?.username || 'Admin');
           btn.href = 'admin.html';
-          btn.style.background = 'linear-gradient(135deg, #7c3aed, #ec4899)';
+          btn.style.background = 'linear-gradient(90deg, #9b7fd4, #c4a8e8)';
         } else if (memberTok) {
           const p = parseJwt(memberTok);
           btn.textContent = '🎀 ' + (p?.display_name || 'Portal');
           btn.href = 'portal.html';
-          btn.style.background = 'linear-gradient(135deg, #d946a6, #ec4899)';
+          btn.style.background = 'linear-gradient(90deg, #9b7fd4, #c4a8e8)';
         } else {
           btn.textContent = '🔑 Log In';
           btn.href = 'portal.html';
-          btn.style.background = 'linear-gradient(135deg, #d946a6, #ec4899)';
+          btn.style.background = '';
         }
       }
 
@@ -349,7 +349,7 @@
             return `
               <div class="vw-card" onclick="openVideoModal('${safeEmbed}', '${safeTitle}')">
                 <div class="vw-bar">
-                  <span class="vw-title">Doll Trap</span>
+                  <span class="vw-title">Pixipi</span>
                   <div class="vw-btns">
                     <button class="vw-btn">□</button>
                     <button class="vw-btn">—</button>
@@ -370,7 +370,7 @@
             return `
               <a class="vw-card" href="${v.url}" target="_blank" rel="noopener noreferrer" style="text-decoration:none">
                 <div class="vw-bar">
-                  <span class="vw-title">Doll Trap</span>
+                  <span class="vw-title">Pixipi</span>
                   <div class="vw-btns">
                     <button class="vw-btn">□</button>
                     <button class="vw-btn">—</button>

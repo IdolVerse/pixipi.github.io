@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Events - Doll Trap</title>
+    <title>Events - Pixipi</title>
     <link rel="stylesheet" href="style.css">
   </head>
 
@@ -34,7 +34,7 @@
         <div class="cal-layout">
           <div class="cal-main">
             <div class="cal-logo">
-              <img src="images/logo.jpg" alt="Doll Trap" id="calLogoImg">
+              <img src="images/logo.jpg" alt="Pixipi" id="calLogoImg">
             </div>
             <table class="calendar-table" id="calendarTable">
               <thead>
@@ -76,8 +76,8 @@
     </div>
 
     <footer>
-      Follow Doll Trap on
-      <a href="https://www.instagram.com/kyk_doll_trap?igsh=MWR5ZDhnNTRvdjA4ZQ==" target="_blank" rel="noopener noreferrer">Instagram</a>
+      Follow Pixipi on
+      <a href="https://www.instagram.com/pixipi_exe?igsh=MWR5ZDhnNTRvdjA4ZQ==" target="_blank" rel="noopener noreferrer">Instagram</a>
       <span>·</span>
       <a href="https://xhslink.com/m/AtFuH3oz3Lz" target="_blank" rel="noopener noreferrer">RedNote</a>
       <span>·</span>
@@ -127,16 +127,16 @@
           const p = parseJwt(adminTok);
           btn.textContent = '⚙️ ' + (p?.username || 'Admin');
           btn.href = 'admin.html';
-          btn.style.background = 'linear-gradient(135deg, #7c3aed, #ec4899)';
+          btn.style.background = 'linear-gradient(90deg, #9b7fd4, #c4a8e8)';
         } else if (memberTok) {
           const p = parseJwt(memberTok);
           btn.textContent = '🎀 ' + (p?.display_name || 'Portal');
           btn.href = 'portal.html';
-          btn.style.background = 'linear-gradient(135deg, #d946a6, #ec4899)';
+          btn.style.background = 'linear-gradient(90deg, #9b7fd4, #c4a8e8)';
         } else {
           btn.textContent = '🔑 Log In';
           btn.href = 'portal.html';
-          btn.style.background = 'linear-gradient(135deg, #d946a6, #ec4899)';
+          btn.style.background = '';
         }
       }
 

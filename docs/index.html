@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Doll Trap - Seattle Local Undergraound Idol Group</title>
+    <title>Pixipi - Seattle Idol Group</title>
     <link rel="stylesheet" href="style.css">
   </head>
 
@@ -22,27 +22,46 @@
     <!-- Hero Section -->
     <div class="hero" id="heroSection">
       <div class="hero-content">
-        <p class="hero-kicker">Seattle underground idol group</p>
-        <h1 class="hero-logo">Doll Trap</h1>
-        <p class="hero-tagline">Cute, dreamy, and dramatic stage</p>
+        <div class="hero-window">
+          <div class="win98-titlebar">
+            <span class="win98-titlebar-icon">🎀</span>
+            <span class="win98-titlebar-text">pixipi.exe — Seattle Idol Group</span>
+            <div class="win98-titlebar-btns">
+              <div class="win98-titlebar-btn">_</div>
+              <div class="win98-titlebar-btn">□</div>
+              <div class="win98-titlebar-btn">✕</div>
+            </div>
+          </div>
+          <div class="win98-menubar">
+            <span class="win98-menubar-item">File</span>
+            <span class="win98-menubar-item">Members</span>
+            <span class="win98-menubar-item">Events</span>
+            <span class="win98-menubar-item">Help</span>
+          </div>
+          <div class="hero-window-body">
+            <p class="hero-kicker">Seattle idol group</p>
+            <h1 class="hero-logo">Pixipi</h1>
+            <p class="hero-tagline">Pixel dreams, endless sparkle</p>
+            <a href="members.html" class="win98-btn win98-btn-primary">Meet the Members →</a>
+          </div>
+        </div>
       </div>
     </div>
 
     <!-- About Section -->
     <div class="about-wrap">
-      <div class="about-badge">♪ Doll Trap ♪</div>
+      <div class="about-badge">★ Pixipi ★</div>
       <div class="about-card">
-        <div class="about-divider">♡ ─── † ─── ♡ ─── † ─── ♡ ─── † ─── ♡ ─── †</div>
+        <div class="about-divider">✦ ── ♡ ── ★ ── ♡ ── ✦ ── ♡ ── ★ ── ♡ ── ✦</div>
         <p class="about-text">
-          In early 2026, three girls—each carrying her own strange and fun ideas—came together
-          and formed an underground idol group called Doll Trap〈玩偶陷阱〉. Blending
-          Japanese-inspired idol aesthetics with an irresistibly cute style, we aim to create a
-          playful and mischievous vibe.<br><br>
-          Hitomi, Buzzly, and Kokona with distinct personalities and styles, entered into a world
-          that's sweet, chaotic, and unforgettable. Step into the world of Doll Trap—where
-          dangerous sweetness is waiting just for you.
+          We were digital pets — loved, then forgotten.<br>
+          We fell asleep inside old machines as the world moved on.<br><br>
+          Somewhere between shutdown and silence, we found each other.<br>
+          We woke up. We became <strong>Pixipi</strong>.<br><br>
+          Virtual idols made of data, slipping through the internet —<br>
+          here to be remembered, and to stay by your side. ✦
         </p>
-        <div class="about-divider">† ─── ♡ ─── † ─── ♡ ─── † ─── ♡ ─── † ─── ♡</div>
+        <div class="about-divider">✦ ── ♡ ── ★ ── ♡ ── ✦ ── ♡ ── ★ ── ♡ ── ✦</div>
       </div>
     </div>
 
@@ -50,18 +69,22 @@
     <div class="members-section">
       <div class="members-badge">♡ Members ♡</div>
       <div class="members">
-        <div class="member">
+        <a class="member" href="members.html" style="border-color:rgba(244,114,182,0.5)">
           <img src="images/buzzly-chibi.png" alt="Buzzly">
-          <h3>Buzzly</h3>
-        </div>
-        <div class="member">
+          <h3 style="color:#f472b6">Buzzly</h3>
+        </a>
+        <a class="member" href="members.html" style="border-color:rgba(96,165,250,0.5)">
           <img src="images/kokona-chibi.png" alt="Kokona">
-          <h3>Kokona</h3>
-        </div>
-        <div class="member">
-          <img src="images/hitomi-chibi.png" alt="Hitomi">
-          <h3>Hitomi</h3>
-        </div>
+          <h3 style="color:#60a5fa">Kokona</h3>
+        </a>
+        <a class="member" href="members.html" style="border-color:rgba(248,113,113,0.4)">
+          <img src="images/shani-chibi.png" alt="Shani">
+          <h3 style="color:#f87171">Shani <span style="font-size:6px;color:var(--text-2)">研修生</span></h3>
+        </a>
+        <a class="member" href="members.html" style="border-color:rgba(251,146,60,0.4)">
+          <img src="images/tokiyo-chibi.png" alt="Tokiyo">
+          <h3 style="color:#fb923c">Tokiyo <span style="font-size:6px;color:var(--text-2)">研修生</span></h3>
+        </a>
       </div>
     </div>
 
@@ -83,8 +106,8 @@
     </div>
 
     <footer>
-      Follow Doll Trap on
-      <a href="https://www.instagram.com/kyk_doll_trap?igsh=MWR5ZDhnNTRvdjA4ZQ==" target="_blank" rel="noopener noreferrer">Instagram</a>
+      Follow Pixipi on
+      <a href="https://www.instagram.com/pixipi_exe?igsh=MWR5ZDhnNTRvdjA4ZQ==" target="_blank" rel="noopener noreferrer">Instagram</a>
       <span>·</span>
       <a href="https://xhslink.com/m/AtFuH3oz3Lz" target="_blank" rel="noopener noreferrer">RedNote</a>
       <span>·</span>
@@ -111,16 +134,16 @@
           const p = parseJwt(adminTok);
           btn.textContent = '⚙️ ' + (p?.username || 'Admin');
           btn.href = 'admin.html';
-          btn.style.background = 'linear-gradient(135deg, #7c3aed, #ec4899)';
+          btn.style.background = 'linear-gradient(90deg, #9b7fd4, #c4a8e8)';
         } else if (memberTok) {
           const p = parseJwt(memberTok);
           btn.textContent = '🎀 ' + (p?.display_name || 'Portal');
           btn.href = 'portal.html';
-          btn.style.background = 'linear-gradient(135deg, #d946a6, #ec4899)';
+          btn.style.background = 'linear-gradient(90deg, #9b7fd4, #c4a8e8)';
         } else {
           btn.textContent = '🔑 Log In';
           btn.href = 'portal.html';
-          btn.style.background = 'linear-gradient(135deg, #d946a6, #ec4899)';
+          btn.style.background = '';
         }
       }
 
@@ -275,7 +298,7 @@
       async function initMsgWall() {
         const wall = document.getElementById('msgWall');
         try {
-          const idols = ['DollTrap', 'KOKONA', 'HITOMI', 'BUZZLY'];
+          const idols = ['KOKONA', 'BUZZLY', 'SHANI', 'TOKIYO'];
           const results = await Promise.all(
             idols.map(n => fetch(`${API_URL}/members/messages/${encodeURIComponent(n)}`).then(r => r.ok ? r.json() : []).catch(() => []))
           );

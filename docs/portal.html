@@ -642,9 +642,11 @@
               : `<div class="checkin-poster-placeholder">🎵</div>`;
             return `
               <div class="checkin-item">
-                ${posterHtml}
+                <a href="event.html?id=${ev.id}" class="checkin-poster-link">${posterHtml}</a>
                 <div class="checkin-info">
-                  <div class="checkin-title">${ev.title}</div>
+                  <a href="event.html?id=${ev.id}" class="checkin-title-link">
+                    <div class="checkin-title">${ev.title}</div>
+                  </a>
                   <div class="checkin-date">📅 ${dateStr}${ev.location ? ' · 📍 ' + ev.location : ''}</div>
                 </div>
                 <span class="checkin-badge">✅ Attended</span>
@@ -688,15 +690,14 @@
               : `<div class="saved-event-thumb-placeholder">${ev.kind === 'album' ? '📁' : '🎵'}</div>`;
             return `
               <div class="saved-event-item">
-                ${thumb}
+                <a href="event.html?id=${ev.id}" class="saved-event-thumb-link">${thumb}</a>
                 <div class="saved-event-info">
-                  <div class="saved-event-title">${ev.title}</div>
+                  <a href="event.html?id=${ev.id}" class="saved-event-title-link">
+                    <div class="saved-event-title">${ev.title}</div>
+                  </a>
                   <div class="saved-event-meta"><span class="saved-event-cat">${cat}</span> · ${dateStr}</div>
                 </div>
-                <div class="saved-event-actions">
-                  <a href="event.html?id=${ev.id}" class="saved-event-view">View →</a>
-                  <button class="saved-event-unsave" title="Remove" onclick="unsaveEvent(${ev.id}, this)">★</button>
-                </div>
+                <button class="saved-event-unsave" title="Remove" onclick="unsaveEvent(${ev.id}, this)">★</button>
               </div>`;
           }).join('');
         } catch (err) {

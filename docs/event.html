@@ -10,7 +10,7 @@
       .ep-wrap {
         max-width: 1100px;
         margin: 0 auto;
-        padding: 32px 24px 80px;
+        padding: 12px 24px 64px;
         display: grid;
         grid-template-columns: 340px 1fr;
         gap: 32px;
@@ -105,74 +105,79 @@
 
       .ep-details { padding: 0 0 24px; }
       .ep-details > * { padding-left: 20px; padding-right: 20px; }
-      .ep-details > .ep-back { margin-top: 16px; }
+      .ep-details > .ep-back { margin-top: 10px; }
       .ep-details::before { padding-left: 12px; padding-right: 12px; }
 
-      .ep-back {
-        display: inline-flex; align-items: center; gap: 6px;
-        color: var(--text-2); text-decoration: none;
-        font-family: var(--pixel); font-size: 10px;
-        margin-bottom: 16px;
-        background: var(--lav-2);
-        border-top: 2px solid var(--w-light); border-left: 2px solid var(--w-light);
-        border-right: 2px solid var(--w-dark); border-bottom: 2px solid var(--w-dark);
-        padding: 6px 12px;
-      }
-      .ep-back:hover { background: var(--lav-3); }
-
-      .ep-category {
+      /* shared label style — Back to Calendar, Convention, About This Event, My Activity */
+      .ep-back,
+      .ep-category,
+      .ep-section-title {
         display: inline-block;
-        font-family: var(--pixel); font-size: 9px;
-        padding: 4px 10px;
+        font-family: var(--pixel); font-size: 11px;
+        color: var(--text);
         background: var(--lav-3);
+        padding: 5px 20px;
         border-top: 1px solid var(--w-light); border-left: 1px solid var(--w-light);
         border-right: 1px solid var(--w-dark); border-bottom: 1px solid var(--w-dark);
-        color: var(--text);
-        margin-bottom: 12px;
+        margin-bottom: 10px;
+        text-decoration: none;
       }
+      /* section titles sit inside padded wrapper divs — pull them flush to the panel edge */
+      .ep-section-title {
+        display: block; width: fit-content;
+        margin-left: -20px;
+      }
+      /* back button sits at top level — just needs width-to-content */
+      .ep-back {
+        display: block; width: fit-content;
+      }
+      /* only the back button is interactive */
+      .ep-back { color: var(--text-2); }
+      .ep-back:hover { background: var(--lav-2); }
 
       .ep-title {
         font-family: var(--pixel); font-weight: 400;
         font-size: clamp(13px, 2vw, 18px);
-        color: var(--text); margin: 0 0 18px; line-height: 1.7;
+        color: var(--text); margin: 0 0 10px; line-height: 1.7;
       }
 
-      .ep-meta-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 18px; }
-
-      .ep-event-link-btn {
-        display: inline-flex; align-items: center; gap: 6px;
-        margin-bottom: 20px; padding: 9px 18px;
-        background: linear-gradient(90deg, var(--tb-from), var(--tb-to));
-        color: #fff; font-family: var(--pixel); font-size: 10px;
-        text-decoration: none; text-shadow: 1px 1px 0 rgba(0,0,0,0.2);
-        border-top: 2px solid var(--w-light); border-left: 2px solid var(--w-light);
-        border-right: 2px solid var(--w-dark); border-bottom: 2px solid var(--w-dark);
-      }
-      .ep-event-link-btn:hover { filter: brightness(1.07); }
+      .ep-meta-list { display: flex; flex-direction: column; gap: 6px; margin-bottom: 10px; }
 
       .ep-meta-item {
-        display: flex; align-items: flex-start; gap: 10px;
-        font-size: 15px; color: var(--text-2);
+        display: flex; align-items: flex-start; gap: 8px;
+        font-size: 13px; color: var(--text-2);
       }
-      .ep-meta-icon { flex-shrink: 0; width: 20px; text-align: center; }
+      .ep-meta-icon { flex-shrink: 0; width: 18px; text-align: center; }
+      .ep-meta-link { color: var(--lav-5); text-decoration: none; }
+      .ep-meta-link:hover { text-decoration: underline; }
+
+      .ep-actions {
+        display: flex; flex-wrap: wrap; gap: 6px;
+        margin-bottom: 2px;
+      }
+      .ep-action-btn {
+        display: inline-flex; align-items: center; gap: 5px;
+        padding: 6px 11px;
+        font-family: var(--pixel); font-size: 9px;
+        border-top: 2px solid var(--w-light); border-left: 2px solid var(--w-light);
+        border-right: 2px solid var(--w-dark); border-bottom: 2px solid var(--w-dark);
+        text-decoration: none; cursor: pointer; background: var(--lav-3); color: var(--text);
+        transition: filter 0.1s;
+      }
+      .ep-action-btn.primary {
+        background: linear-gradient(90deg, var(--tb-from), var(--tb-to));
+        color: #fff; text-shadow: 1px 1px 0 rgba(0,0,0,0.2);
+      }
+      .ep-action-btn:hover { filter: brightness(1.07); }
 
       .ep-divider {
         height: 2px;
         background: var(--lav-3);
-        margin: 18px 0;
+        margin: 12px 0;
         border-top: 1px solid var(--w-dark);
         border-bottom: 1px solid var(--w-light);
       }
 
-      .ep-section-title {
-        font-family: var(--pixel); font-size: 11px;
-        color: var(--text); margin: 0 0 12px;
-        background: var(--lav-3);
-        padding: 5px 10px;
-        border-top: 1px solid var(--w-light); border-left: 1px solid var(--w-light);
-        border-right: 1px solid var(--w-dark); border-bottom: 1px solid var(--w-dark);
-        display: inline-block;
-      }
 
       .ep-desc {
         font-size: 15px; line-height: 1.8;
@@ -276,28 +281,27 @@
       .ep-lightbox-close:hover { opacity: 1; }
 
       /* ── Prev / Next nav ── */
-      .ep-evt-nav { display: flex; align-items: stretch; gap: 8px; margin-top: 16px; }
+      .ep-evt-nav { display: flex; align-items: stretch; gap: 6px; margin-top: 10px; }
       .ep-evt-nav-btn {
-        flex: 1; display: flex; flex-direction: column; gap: 4px;
-        padding: 12px 14px;
+        flex: 1; display: flex; flex-direction: row; align-items: center; gap: 6px;
+        padding: 6px 10px;
         background: var(--lav-2); text-decoration: none; color: var(--text);
         border-top: 2px solid var(--w-light); border-left: 2px solid var(--w-light);
         border-right: 2px solid var(--w-dark); border-bottom: 2px solid var(--w-dark);
         min-width: 0; transition: filter 0.1s;
       }
       .ep-evt-nav-btn:hover { filter: brightness(1.04); }
-      .ep-evt-nav-btn.prev { align-items: flex-start; }
-      .ep-evt-nav-btn.next { align-items: flex-end; text-align: right; }
+      .ep-evt-nav-btn.next { flex-direction: row-reverse; }
       .ep-evt-nav-label {
-        font-family: var(--pixel); font-size: 9px; color: var(--pink-d);
-        letter-spacing: 0.06em; text-transform: uppercase;
+        font-family: var(--pixel); font-size: 8px; color: var(--pink-d);
+        flex-shrink: 0;
       }
       .ep-evt-nav-title {
-        font-size: 13px; font-weight: 600;
+        font-family: var(--pixel); font-size: 8px;
         white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-        max-width: 100%; color: var(--text-2);
+        color: var(--text-2); min-width: 0;
       }
-      .ep-evt-nav-date { font-size: 11px; color: var(--lav-3); }
+      .ep-evt-nav-date { display: none; }
 
       /* ── Loading ── */
       .ep-loading {
@@ -348,10 +352,7 @@
         <h1 id="epTitle" class="ep-title"></h1>
 
         <div id="epMetaList" class="ep-meta-list"></div>
-
-        <!-- Member actions -->
-        <div class="ep-divider"></div>
-        <div id="epMemberArea"></div>
+        <div id="epActions" class="ep-actions"></div>
 
         <!-- Description -->
         <div id="epDescSection" style="display:none;">
@@ -373,6 +374,10 @@
           <div class="ep-section-title">🎬 Videos</div>
           <div id="epVideosList"></div>
         </div>
+
+        <!-- Member actions -->
+        <div class="ep-divider"></div>
+        <div id="epMemberArea"></div>
       </div>
     </div>
 
@@ -402,7 +407,41 @@
 
       let eventId = null;
       let eventDate = null;
+      let currentEv = null;
       let memberEventStatus = { saved: false, checkedIn: false };
+
+      function addToCalendar() {
+        if (!currentEv) return;
+        const d = new Date(currentEv.date);
+        const pad = n => String(n).padStart(2, '0');
+        const hasTime = d.getHours() !== 0 || d.getMinutes() !== 0;
+        let dtStart, dtEnd;
+        if (hasTime) {
+          const fmt = dt => `${dt.getFullYear()}${pad(dt.getMonth()+1)}${pad(dt.getDate())}T${pad(dt.getHours())}${pad(dt.getMinutes())}00`;
+          dtStart = fmt(d);
+          const end = new Date(d); end.setHours(end.getHours() + 3);
+          dtEnd = fmt(end);
+        } else {
+          const fmt = dt => `${dt.getFullYear()}${pad(dt.getMonth()+1)}${pad(dt.getDate())}`;
+          dtStart = fmt(d); dtEnd = fmt(d);
+        }
+        const lines = [
+          'BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Pixipi//Event//EN',
+          'BEGIN:VEVENT',
+          `DTSTART${hasTime ? '' : ';VALUE=DATE'}:${dtStart}`,
+          `DTEND${hasTime ? '' : ';VALUE=DATE'}:${dtEnd}`,
+          `SUMMARY:${currentEv.title}`,
+          currentEv.location ? `LOCATION:${currentEv.location}` : '',
+          currentEv.description ? `DESCRIPTION:${currentEv.description.replace(/[\r\n]+/g, '\\n').slice(0, 500)}` : '',
+          currentEv.link ? `URL:${currentEv.link}` : '',
+          'END:VEVENT', 'END:VCALENDAR'
+        ].filter(Boolean).join('\r\n');
+        const blob = new Blob([lines], { type: 'text/calendar' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url; a.download = `${currentEv.title.replace(/[^a-z0-9]/gi, '_')}.ics`;
+        a.click(); URL.revokeObjectURL(url);
+      }
 
       function parseJwt(t) {
         try { return JSON.parse(atob(t.split('.')[1])); } catch { return null; }
@@ -686,23 +725,25 @@
           if (timeStr) label += ` · ${timeStr}${ev.end_time ? ' – ' + ev.end_time : ''}`;
           meta.push(['📅', label]);
         }
-        if (ev.location) meta.push(['📍', ev.location]);
+        if (ev.location) {
+          const mapsUrl = `https://maps.google.com/?q=${encodeURIComponent(ev.location)}`;
+          meta.push(['📍', `<a class="ep-meta-link" href="${mapsUrl}" target="_blank" rel="noopener">${ev.location}</a>`]);
+        }
         document.getElementById('epMetaList').innerHTML = meta.map(([icon, text]) => `
           <div class="ep-meta-item">
             <span class="ep-meta-icon">${icon}</span>
             <span>${text}</span>
           </div>`).join('');
 
-        // Link
+        // Actions row: event link + add to calendar
+        const actions = [];
         if (ev.link) {
-          const linkEl = document.createElement('a');
-          linkEl.href = ev.link;
-          linkEl.target = '_blank';
-          linkEl.rel = 'noopener noreferrer';
-          linkEl.className = 'ep-event-link-btn';
-          linkEl.textContent = '🔗 Event Link →';
-          document.getElementById('epMetaList').after(linkEl);
+          actions.push(`<a class="ep-action-btn primary" href="${ev.link}" target="_blank" rel="noopener noreferrer">🔗 Event Link →</a>`);
         }
+        if (ev.date) {
+          actions.push(`<button class="ep-action-btn" onclick="addToCalendar()">📅 Add to Calendar</button>`);
+        }
+        document.getElementById('epActions').innerHTML = actions.join('');
 
         // Description
         if (ev.description) {
@@ -712,6 +753,7 @@
 
         // Member area
         eventDate = ev.date || null;
+        currentEv = ev;
         renderMemberArea();
 
         // Photos

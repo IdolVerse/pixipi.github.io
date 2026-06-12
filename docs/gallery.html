@@ -36,26 +36,33 @@
         </div>
       </div>
 
-      <div id="folderContainer" class="gallery-grid"></div>
+      <div id="folderContainer" class="gallery-folder-grid"></div>
 
-      <div id="albumView" style="display: none; margin-top: 20px;">
-        <button id="backToFoldersBtn" class="filter-btn" style="margin-bottom: 16px;">← Back to Albums</button>
-        <h2 id="albumTitle" class="event-title"></h2>
+      <div id="albumView" style="display: none; margin-top: 16px;">
 
-        <!-- Event Detail Banner -->
-        <div id="eventDetailBanner" class="event-detail-header" style="display: none;">
-          <div id="eventDetailPosterWrap" class="event-detail-poster">
-            <img id="eventDetailPoster" src="" alt="Event Poster">
+        <!-- Album header panel -->
+        <div class="album-header-panel">
+          <div class="album-header-titlebar">
+            <span class="album-header-icon">🖼</span>
+            <span id="albumTitle" class="album-header-title"></span>
+            <button id="backToFoldersBtn" class="album-header-back">← Albums</button>
           </div>
-          <div class="event-detail-info">
-            <div id="eventDetailDate" class="event-detail-row" style="display:none;"></div>
-            <div id="eventDetailLocation" class="event-detail-row" style="display:none;"></div>
-            <div id="eventDetailDesc" class="event-detail-row" style="display:none;"></div>
-            <div id="eventDetailVideos" class="event-video-links" style="display:none;"></div>
+          <div class="album-header-body" id="eventDetailBanner" style="display:none;">
+            <div id="eventDetailPosterWrap" class="album-header-poster">
+              <img id="eventDetailPoster" src="" alt="Event Poster">
+            </div>
+            <div class="album-header-info">
+              <div id="eventDetailDate" class="album-header-row" style="display:none;"></div>
+              <div id="eventDetailLocation" class="album-header-row" style="display:none;"></div>
+              <div id="eventDetailDesc" class="album-header-row album-header-desc" style="display:none;"></div>
+              <div id="eventDetailVideos" class="event-video-links" style="display:none;"></div>
+            </div>
+          </div>
+          <div class="album-header-footer">
+            <span id="albumMeta" class="album-header-meta"></span>
           </div>
         </div>
 
-        <div id="albumMeta" style="color: #777; margin-bottom: 16px;"></div>
         <div id="albumGrid" class="gallery-grid"></div>
       </div>
 
@@ -71,10 +78,23 @@
     </footer>
 
     <!-- Image Zoom Modal -->
-    <div id="imageModal" class="image-modal">
-      <span class="close">&times;</span>
+    <div id="imageModal" class="image-modal" onclick="closeImageModal()">
       <button id="modalPrevBtn" class="image-modal-nav image-modal-prev" type="button" aria-label="Previous image">‹</button>
-      <img id="modalImage" src="" alt="Zoomed Image">
+      <div class="modal-win98-window" onclick="event.stopPropagation()">
+        <div class="modal-win98-titlebar">
+          <span class="modal-win98-icon">🖼</span>
+          <span class="modal-win98-title">Photo Viewer</span>
+          <div class="modal-win98-btns">
+            <div class="modal-win98-btn close">✕</div>
+          </div>
+        </div>
+        <div class="modal-win98-body">
+          <img id="modalImage" src="" alt="Zoomed Image">
+        </div>
+        <div class="modal-win98-statusbar">
+          <span id="modalCounter"></span>
+        </div>
+      </div>
       <button id="modalNextBtn" class="image-modal-nav image-modal-next" type="button" aria-label="Next image">›</button>
     </div>
 
@@ -183,7 +203,9 @@
 
         currentModalIndex = (index + currentModalPhotos.length) % currentModalPhotos.length;
         modalImg.src = currentModalPhotos[currentModalIndex];
-        modal.style.display = 'block';
+        const counter = document.getElementById('modalCounter');
+        if (counter) counter.textContent = `${currentModalIndex + 1} / ${currentModalPhotos.length}`;
+        modal.style.display = 'flex';
       }
 
       function openImageModal(index) {
@@ -261,7 +283,8 @@
         const folderContainer = document.getElementById('folderContainer');
         const albumView = document.getElementById('albumView');
         albumView.style.display = 'none';
-        folderContainer.style.display = 'grid';
+        folderContainer.className = 'gallery-folder-grid';
+        folderContainer.style.display = '';
 
         // Apply member filter
         const filteredPhotos = currentMemberFilter 
@@ -310,7 +333,7 @@
         }
 
         folderContainer.innerHTML = folders.map(folder => `
-          <div class="gallery-item" style="cursor:pointer;" onclick="openAlbum('${folder.key}')">
+          <div class="gallery-item gallery-folder-item" style="cursor:pointer;" onclick="openAlbum('${folder.key}')">
             ${imgWithFallback(thumbUrl(folder.cover, 400), folder.cover, folder.title, `title="${folder.title}"`)}
             <p class="photo-member">${folder.title}</p>
           </div>
@@ -418,33 +441,34 @@
         }
 
         albumTitle.textContent = title;
-        // Event details link
+        // Event details link — place in footer
         const existingLink = document.getElementById('albumEventLink');
         if (existingLink) existingLink.remove();
+        const footer = document.querySelector('.album-header-footer');
         if (key.startsWith('event-')) {
           const eventId = key.replace('event-', '');
           const eventObj = allEvents.find(e => String(e.id) === eventId);
-          if (eventObj && (eventObj.kind || 'event') === 'event') {
+          if (eventObj && (eventObj.kind || 'event') === 'event' && footer) {
             const link = document.createElement('a');
             link.id = 'albumEventLink';
             link.href = `event.html?id=${eventId}`;
             link.textContent = 'View Event Details →';
-            link.style.cssText = 'display:inline-block;margin-bottom:12px;font-size:13px;color:#d946a6;font-weight:600;text-decoration:none;';
-            albumTitle.insertAdjacentElement('afterend', link);
+            link.className = 'album-event-link';
+            footer.prepend(link);
           }
         }
-        albumMeta.textContent = meta;
+        const metaEl = document.getElementById('albumMeta');
+        if (metaEl) metaEl.textContent = meta;
         currentModalPhotos = photos.map(photo => resolvePhotoUrl(photo));
         currentModalIndex = 0;
 
         albumGrid.innerHTML = photos.map((photo, index) => {
           const url = resolvePhotoUrl(photo);
-          const memberTag = photo.member_tag || 'Group';
           const isSaved = savedPhotoIds.has(photo.id);
           return `
             <div class="gallery-item">
               ${imgWithFallback(thumbUrl(url), url, photo.caption || 'Photo', `title="${photo.caption || ''}" onclick="openImageModal(${index})"`)}
-              <p class="photo-member">${memberTag}</p>
+
               <button class="photo-heart-btn${isSaved ? ' saved' : ''}" data-photo-id="${photo.id}" onclick="toggleSavePhoto(${photo.id}, event)">${isSaved ? '\u2665' : '\u2661'}</button>
             </div>
           `;

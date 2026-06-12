@@ -308,7 +308,8 @@
                 cell.classList.add('today');
               }
 
-              cell.innerHTML = `<div class="day-bubble">${date}${hasEvent ? '<span class="event-dot"></span>' : ''}</div>`;
+              const numHtml = hasEvent ? `<span class="event-day-num">${date}</span>` : date;
+              cell.innerHTML = `<div class="day-bubble">${numHtml}${hasEvent ? '<span class="event-dot"></span>' : ''}</div>`;
 
               cell.dataset.date = dateStr;
               cell.addEventListener('click', function() { showEvents(dateStr); });
@@ -346,15 +347,25 @@
           return;
         }
 
+        // hide Next Upcoming Event panel if it's the same date as what's being viewed
+        const nextSection = document.getElementById('nextEventSection');
+        if (nextSection) {
+          nextSection.style.display = (cachedNextEvent && cachedNextEvent.date === dateStr) ? 'none' : '';
+        }
+
         eventsList.style.display = 'block';
         if (dayEvents && dayEvents.length > 0) {
           eventsList.innerHTML = `<h3>Events on ${formattedDate}</h3>` + dayEvents.map((event, i) => `
             <div class="event-item event-item-clickable" data-date="${dateStr}" data-idx="${i}">
-              <h4>${event.title}</h4>
-              <p><span class="event-type">${event.category || event.type}</span></p>
-              <p><strong>Time:</strong> ${event.time}${event.end_time ? ` – ${event.end_time}` : ''}</p>
-              ${event.location ? `<p><strong>Location:</strong> ${event.location}</p>` : ''}
-              <span class="event-item-more">View details →</span>
+              <div class="event-item-title">${event.title}</div>
+              <div class="event-item-meta">
+                ${event.category || event.type ? `<span class="event-type">${event.category || event.type}</span>` : ''}
+                ${event.time ? `<span class="event-item-time">⏰ ${event.time}${event.end_time ? ` – ${event.end_time}` : ''}</span>` : ''}
+                ${event.location ? `<span class="event-item-loc">📍 ${event.location}</span>` : ''}
+              </div>
+              <div class="event-item-actions">
+                <button class="jump-btn jump-btn-secondary" onclick="event.stopPropagation()">View details →</button>
+              </div>
             </div>
           `).join('');
           eventsList.querySelectorAll('[data-date]').forEach(el => {
@@ -401,19 +412,25 @@
         });
       }
 
+      let cachedNextEvent = null;
+
       function displayNextEvent() {
-        const nextEvent = getNextEvent();
+        cachedNextEvent = getNextEvent();
+        const nextEvent = cachedNextEvent;
         const nextEventContent = document.getElementById('nextEventContent');
 
         if (nextEvent) {
           nextEventContent.innerHTML = `
             <div class="next-event-card event-item-clickable" data-event-key="next">
-              <div class="next-event-date">${nextEvent.displayDate}</div>
-              <h4>${nextEvent.title}</h4>
-              <p><span class="event-type">${nextEvent.category || nextEvent.type || 'Event'}</span></p>
-              <p><strong>Time:</strong> ${nextEvent.time}${nextEvent.end_time ? ` – ${nextEvent.end_time}` : ''}</p>
-              <button class="jump-btn" onclick="event.stopPropagation(); jumpToDate('${nextEvent.date}')">View in Calendar</button>
-              <span class="event-item-more" style="display:block; margin-top:8px;">View details →</span>
+              <div class="event-item-title">${nextEvent.title}</div>
+              <div class="event-item-meta">
+                ${nextEvent.category || nextEvent.type ? `<span class="event-type">${nextEvent.category || nextEvent.type}</span>` : ''}
+                ${nextEvent.displayDate ? `<span class="event-item-time">📅 ${nextEvent.displayDate}</span>` : ''}
+                ${nextEvent.time ? `<span class="event-item-time">⏰ ${nextEvent.time}${nextEvent.end_time ? ` – ${nextEvent.end_time}` : ''}</span>` : ''}
+              </div>
+              <div class="event-item-actions">
+                <button class="jump-btn jump-btn-secondary" onclick="event.stopPropagation()">View details →</button>
+              </div>
             </div>
           `;
           document.querySelector('[data-event-key="next"]').addEventListener('click', function(e) {

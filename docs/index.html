@@ -21,15 +21,16 @@
 
     <!-- Hero Section -->
     <div class="hero" id="heroSection">
+      <div class="hero-photo-wall" id="heroPhotoWall"></div>
       <div class="hero-content">
-        <div class="hero-window">
+        <div class="hero-window" id="heroWindow">
           <div class="win98-titlebar">
             <span class="win98-titlebar-icon">🎀</span>
             <span class="win98-titlebar-text">pixipi.exe — Seattle Idol Group</span>
             <div class="win98-titlebar-btns">
-              <div class="win98-titlebar-btn">_</div>
+              <div class="win98-titlebar-btn" onclick="document.getElementById('heroWindow').style.display='none'">_</div>
               <div class="win98-titlebar-btn">□</div>
-              <div class="win98-titlebar-btn">✕</div>
+              <div class="win98-titlebar-btn" onclick="document.getElementById('heroWindow').style.display='none'">✕</div>
             </div>
           </div>
           <div class="win98-menubar">
@@ -161,26 +162,39 @@
         return normalizeEventCategory(descriptionPrefix);
       }
       
-      // Load random photo for hero background
+      // Load photo wall for hero background
       async function loadRandomHeroPhoto() {
         try {
           const response = await fetch(`${API_URL}/photos`);
           const photos = await response.json();
+          if (!photos.length) return;
 
-          const groupPhotos = photos.filter(photo => photo.member_tag === 'Group');
-          const heroPhotos = groupPhotos.length > 0 ? groupPhotos : photos;
-          
-          if (heroPhotos.length > 0) {
-            const randomPhoto = heroPhotos[Math.floor(Math.random() * heroPhotos.length)];
-            const photoUrl = randomPhoto.photo_url.startsWith('http') 
-              ? randomPhoto.photo_url 
-              : `${API_ORIGIN}${randomPhoto.photo_url}`;
-            
-            document.getElementById('heroSection').style.backgroundImage = `url('${photoUrl}')`;
+          const wall = document.getElementById('heroPhotoWall');
+          if (!wall) return;
+
+          const shuffled = [...photos].sort(() => Math.random() - 0.5);
+
+          // 6×5 jittered grid → 30 tiles covering the full hero
+          const COLS = 6, ROWS = 5;
+          for (let r = 0; r < ROWS; r++) {
+            for (let c = 0; c < COLS; c++) {
+              const photo = shuffled[(r * COLS + c) % shuffled.length];
+              const url = photo.photo_url.startsWith('http') ? photo.photo_url : `${API_ORIGIN}${photo.photo_url}`;
+              const rot = (Math.random() * 12 - 6).toFixed(1);
+              // cell centre + random jitter
+              const x = Math.max(0, Math.min(88, c / COLS * 100 + (Math.random() - 0.5) * 12)).toFixed(1);
+              const y = Math.max(0, Math.min(88, r / ROWS * 100 + (Math.random() - 0.5) * 18)).toFixed(1);
+              const tile = document.createElement('div');
+              tile.className = 'hero-photo-tile';
+              tile.style.left = `${x}%`;
+              tile.style.top  = `${y}%`;
+              tile.style.setProperty('--rot', `${rot}deg`);
+              tile.innerHTML = `<img src="${url}" loading="lazy" alt="">`;
+              wall.appendChild(tile);
+            }
           }
-        } catch (error) {
-          console.error('Error loading hero photo:', error);
-          // Keep default background if loading fails
+        } catch (e) {
+          console.error('Error loading hero photos:', e);
         }
       }
       
@@ -288,38 +302,59 @@
       initMsgWall();
 
       // ── Message wall ──────────────────────────────────────────────────
-      const MW_COLORS = ['#d946a6','#ec4899','#f9a8d4','#dc2626','#3b82f6','#a855f7','#f472b6','#fb7185','#c084fc','#60a5fa','#f0abfc'];
-      const MW_SIZES  = [0.72, 0.82, 0.95, 1.1, 1.28, 1.5, 1.75, 2.1];
-      const MW_ROTS   = [-14, -9, -6, -3, -1, 0, 1, 3, 6, 9, 14];
+      const IDOL_COLOR = {
+        'KOKONA': '#60a5fa',
+        'BUZZLY': '#f472b6',
+        'SHANI':  '#f87171',
+        'TOKIYO': '#fb923c',
+        'Pixipi': '#a0a0c0',
+      };
+
+      function buildMsgItem(m) {
+        const color = IDOL_COLOR[m._idol] || '#a0a0c0';
+        const label = m._idol === 'Pixipi' ? 'Pixipi ✦' : m._idol;
+        const text  = m.content.replace(/</g,'&lt;').replace(/>/g,'&gt;');
+        const el = document.createElement('div');
+        el.className = 'msg-wall-item';
+        el.innerHTML = `
+          <span class="msg-wall-to" style="color:${color}">To ${label}</span>
+          <span class="msg-wall-content">${text}</span>
+          <span class="msg-wall-from">from ${m.display_name}</span>`;
+        return el;
+      }
 
       async function initMsgWall() {
         const wall = document.getElementById('msgWall');
         try {
-          const idols = ['KOKONA', 'BUZZLY', 'SHANI', 'TOKIYO'];
+          const idols = ['KOKONA', 'BUZZLY', 'SHANI', 'TOKIYO', 'Pixipi'];
           const results = await Promise.all(
-            idols.map(n => fetch(`${API_URL}/members/messages/${encodeURIComponent(n)}`).then(r => r.ok ? r.json() : []).catch(() => []))
+            idols.map(n =>
+              fetch(`${API_URL}/members/messages/${encodeURIComponent(n)}`)
+                .then(r => r.ok ? r.json() : [])
+                .then(arr => arr.map(m => ({ ...m, _idol: n })))
+                .catch(() => [])
+            )
           );
           const data = results.flat();
           if (data.length === 0) {
             wall.innerHTML = '<span class="msg-empty">No messages yet — visit Members to leave one! 🌸</span>';
             return;
           }
-          wall.innerHTML = '';
           const msgs = data.sort(() => Math.random() - 0.5);
-          msgs.forEach(m => {
-            const span = document.createElement('span');
-            span.className = 'msg-wall-item';
-            const text = m.content.replace(/</g,'&lt;').replace(/>/g,'&gt;');
-            span.innerHTML = `<em class="mw-author">${m.display_name}</em> ${text}`;
-            const size  = MW_SIZES[Math.floor(Math.random() * MW_SIZES.length)];
-            const color = MW_COLORS[Math.floor(Math.random() * MW_COLORS.length)];
-            const rot   = MW_ROTS[Math.floor(Math.random() * MW_ROTS.length)];
-            const top   = 2 + Math.random() * 82;
-            const left  = Math.random() * 68;
-            const op    = 0.45 + Math.random() * 0.55;
-            span.style.cssText = `top:${top}%;left:${left}%;font-size:${size}rem;color:${color};transform:rotate(${rot}deg);opacity:${op.toFixed(2)};`;
-            wall.appendChild(span);
-          });
+          const copies = msgs.length < 6 ? 4 : msgs.length < 10 ? 3 : 2;
+
+          const track = document.createElement('div');
+          track.className = 'msg-wall-track';
+          for (let c = 0; c < copies; c++) {
+            msgs.forEach(m => track.appendChild(buildMsgItem(m)));
+          }
+
+          wall.innerHTML = '';
+          wall.appendChild(track);
+
+          // speed: ~180px per second
+          track.style.animationDuration = `${Math.round(msgs.length * copies * 1.4)}s`;
+          track.classList.add('running');
         } catch {
           wall.innerHTML = '<span class="msg-empty">Could not load messages.</span>';
         }
@@ -334,10 +369,12 @@
             const heroSection = document.getElementById('heroSection');
             
             if (heroSection) {
-              // Parallax effect - slow movement
-              heroSection.style.transform = `translateY(${scrolled * 0.5}px)`;
-              
-              // Fade out effect as user scrolls
+              // only apply parallax on desktop — on mobile the downward shift covers content below
+              if (window.innerWidth > 768) {
+                heroSection.style.transform = `translateY(${scrolled * 0.5}px)`;
+              } else {
+                heroSection.style.transform = '';
+              }
               const opacity = Math.max(0, 1 - scrolled / 600);
               heroSection.style.opacity = opacity;
             }

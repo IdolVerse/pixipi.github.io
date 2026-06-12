@@ -414,12 +414,16 @@
           const p = parseJwt(adminToken);
           btn.textContent = '⚙️ ' + (p?.username || 'Admin');
           btn.href = 'admin.html';
-          btn.style.background = 'linear-gradient(135deg, #7c3aed, #ec4899)';
+          btn.style.background = 'linear-gradient(90deg, #9b7fd4, #c4a8e8)';
         } else if (memberToken) {
           const p = parseJwt(memberToken);
           btn.textContent = '🎀 ' + (p?.display_name || 'Portal');
           btn.href = 'portal.html';
-          btn.style.background = 'linear-gradient(135deg, #d946a6, #ec4899)';
+          btn.style.background = 'linear-gradient(90deg, #9b7fd4, #c4a8e8)';
+        } else {
+          btn.textContent = '🔑 Log In';
+          btn.href = 'portal.html';
+          btn.style.background = '';
         }
       }
 

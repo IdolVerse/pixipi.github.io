@@ -25,7 +25,7 @@
         <!-- Login Form -->
         <div class="auth-card" id="loginCard">
           <h2>Welcome back 👋</h2>
-          <a class="google-btn" href="https://api.cocolee-k2.workers.dev/api/members/auth/google">
+          <a class="google-btn" id="googleBtn" href="#">
             <svg width="18" height="18" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg"><path d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.875 2.684-6.615z" fill="#4285F4"/><path d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18z" fill="#34A853"/><path d="M3.964 10.71A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.042l3.007-2.332z" fill="#FBBC05"/><path d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.958L3.964 6.29C4.672 4.163 6.656 3.58 9 3.58z" fill="#EA4335"/></svg>
             Continue with Google
           </a>
@@ -56,7 +56,7 @@
         <!-- Register Form -->
         <div class="auth-card" id="registerCard" style="display:none;">
           <h2>Join Pixipi fans 🌸</h2>
-          <a class="google-btn" href="https://api.cocolee-k2.workers.dev/api/members/auth/google">
+          <a class="google-btn" id="googleBtn" href="#">
             <svg width="18" height="18" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg"><path d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.875 2.684-6.615z" fill="#4285F4"/><path d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18z" fill="#34A853"/><path d="M3.964 10.71A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.042l3.007-2.332z" fill="#FBBC05"/><path d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.958L3.964 6.29C4.672 4.163 6.656 3.58 9 3.58z" fill="#EA4335"/></svg>
             Sign up with Google
           </a>
@@ -95,11 +95,27 @@
         <div class="auth-card" id="sentCard" style="display:none;text-align:center">
           <div style="font-size:2.5rem;margin-bottom:16px">📬</div>
           <h2>Check your email!</h2>
-          <p style="color:var(--text-secondary);font-size:14px;line-height:1.7;margin:0 0 20px">
-            We sent a verification link to <strong id="sentEmail"></strong>.<br>
-            Click it to activate your account — expires in 15 minutes.
+          <p style="color:var(--text-secondary);font-size:14px;line-height:1.7;margin:0 0 16px">
+            We sent a verification code to <strong id="sentEmail"></strong>.<br>
+            Enter the 6-digit code below, or click the link in the email.
           </p>
-          <button class="submit-btn" onclick="showRegister()" style="width:auto;padding:10px 24px;font-size:14px">← Back</button>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:10px;margin-bottom:10px;">
+            <div id="otpBoxes" style="display:flex;gap:6px;">
+              <input class="otp-box" type="text" inputmode="numeric" maxlength="1">
+              <input class="otp-box" type="text" inputmode="numeric" maxlength="1">
+              <input class="otp-box" type="text" inputmode="numeric" maxlength="1">
+              <input class="otp-box" type="text" inputmode="numeric" maxlength="1">
+              <input class="otp-box" type="text" inputmode="numeric" maxlength="1">
+              <input class="otp-box" type="text" inputmode="numeric" maxlength="1">
+            </div>
+            <button class="submit-btn" id="verifyCodeBtn" onclick="verifyWithCode()" style="width:100%;padding:10px;">Verify</button>
+          </div>
+          <p class="portal-msg" id="verifyCodeMsg" style="margin-bottom:12px;"></p>
+          <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+            <button class="submit-btn" onclick="showRegister()" style="width:auto;padding:8px 18px;font-size:12px;background:var(--lav-2);color:var(--text)">← Back</button>
+            <button class="submit-btn" id="resendBtn" onclick="resendVerification()" style="width:auto;padding:8px 18px;font-size:12px;background:var(--lav-3);color:var(--text)">Resend</button>
+          </div>
+          <p class="portal-msg" id="resendMsg" style="margin-top:8px;"></p>
         </div>
 
         <!-- Forgot Password Form -->
@@ -140,41 +156,40 @@
 
         <!-- Profile Card -->
         <div class="portal-profile-card">
-          <div class="portal-avatar" id="profileAvatar">?</div>
-          <div class="portal-profile-info">
-            <p class="portal-profile-name" id="profileName">—</p>
-            <p class="portal-profile-email" id="profileEmail">—</p>
-            <p class="portal-profile-since" id="profileSince"></p>
-
-            <!-- Inline edit name form -->
-            <div class="inline-edit-form" id="editNameForm">
-              <input type="text" id="editNameInput" placeholder="New display name">
-              <div style="display:flex;gap:8px;">
-                <button class="portal-btn-sm portal-btn-pink" onclick="saveDisplayName()">Save</button>
-                <button class="portal-btn-sm portal-btn-gray" onclick="toggleEditName(false)">Cancel</button>
+          <div class="portal-profile-body">
+            <div class="portal-avatar" id="profileAvatar">?</div>
+            <div class="portal-profile-info">
+              <p class="portal-profile-name" id="profileName">—</p>
+              <p class="portal-profile-email" id="profileEmail">—</p>
+              <p class="portal-profile-since" id="profileSince"></p>
+              <div class="inline-edit-form" id="editNameForm">
+                <input type="text" id="editNameInput" placeholder="New display name">
+                <div style="display:flex;gap:8px;margin-top:4px;">
+                  <button class="portal-btn-sm portal-btn-pink" onclick="saveDisplayName()">Save</button>
+                  <button class="portal-btn-sm portal-btn-gray" onclick="toggleEditName(false)">Cancel</button>
+                </div>
+                <p class="portal-msg" id="editNameMsg"></p>
               </div>
-              <p class="portal-msg" id="editNameMsg" style="margin-top:8px;"></p>
-            </div>
-
-            <!-- Inline change password form -->
-            <div class="inline-edit-form" id="changePassForm">
-              <div class="pw-wrap">
-                <input type="password" id="cpCurrent" placeholder="Current password">
-                <button type="button" class="pw-toggle" onclick="togglePw('cpCurrent', this)" tabindex="-1">👁️</button>
+              <div class="inline-edit-form" id="changePassForm">
+                <div class="pw-wrap">
+                  <input type="password" id="cpCurrent" placeholder="Current password">
+                  <button type="button" class="pw-toggle" onclick="togglePw('cpCurrent', this)" tabindex="-1">👁️</button>
+                </div>
+                <div class="pw-wrap">
+                  <input type="password" id="cpNew" placeholder="New password (min 6)">
+                  <button type="button" class="pw-toggle" onclick="togglePw('cpNew', this)" tabindex="-1">👁️</button>
+                </div>
+                <div style="display:flex;gap:8px;margin-top:4px;">
+                  <button class="portal-btn-sm portal-btn-pink" onclick="savePassword()">Save</button>
+                  <button class="portal-btn-sm portal-btn-gray" onclick="toggleChangePass(false)">Cancel</button>
+                </div>
+                <p class="portal-msg" id="changePassMsg"></p>
               </div>
-              <div class="pw-wrap">
-                <input type="password" id="cpNew" placeholder="New password (min 6)">
-                <button type="button" class="pw-toggle" onclick="togglePw('cpNew', this)" tabindex="-1">👁️</button>
-              </div>
-              <div style="display:flex;gap:8px;">
-                <button class="portal-btn-sm portal-btn-pink" onclick="savePassword()">Save</button>
-                <button class="portal-btn-sm portal-btn-gray" onclick="toggleChangePass(false)">Cancel</button>
-              </div>
-              <p class="portal-msg" id="changePassMsg" style="margin-top:8px;"></p>
             </div>
           </div>
           <div class="portal-profile-actions">
             <button class="portal-btn-sm portal-btn-pink" onclick="toggleEditName(true)">✏️ Edit Name</button>
+            <button class="portal-btn-sm portal-btn-gray" onclick="toggleChangePass(true)">🔑 Change Password</button>
             <label class="portal-btn-sm portal-btn-gray" style="display:flex;align-items:center;gap:6px;cursor:pointer;user-select:none">
               <input type="checkbox" id="emailUpdatesToggle" style="width:auto;accent-color:#d946a6" onchange="saveEmailUpdates(this.checked)">
               Monthly updates 🎀
@@ -203,35 +218,35 @@
           </div>
         </div>
 
-        <!-- Check-ins (attended events) -->
+        <!-- Check-ins -->
         <div class="portal-section">
-          <h3>📍 Events I've Attended</h3>
+          <div class="portal-section-title">📍 Events I've Attended</div>
           <div class="checkin-list" id="checkinList">
-            <div class="portal-empty">Loading…</div>
+            <div class="portal-empty">No events attended yet</div>
           </div>
         </div>
 
         <!-- Saved Events -->
         <div class="portal-section">
-          <h3>⭐ Saved Events</h3>
+          <div class="portal-section-title">⭐ Saved Events</div>
           <div class="saved-events-list" id="savedEventsList">
-            <div class="portal-empty">Loading…</div>
+            <div class="portal-empty">No saved events yet</div>
           </div>
         </div>
 
         <!-- Saved Photos -->
         <div class="portal-section">
-          <h3>❤️ Saved Photos</h3>
+          <div class="portal-section-title">❤️ Saved Photos</div>
           <div class="portal-photos-grid" id="savedPhotosList">
-            <div class="portal-empty" style="grid-column:1/-1">Loading…</div>
+            <div class="portal-empty" style="grid-column:1/-1">No saved photos yet</div>
           </div>
         </div>
 
         <!-- My Messages -->
         <div class="portal-section">
-          <h3>💬 My Messages</h3>
+          <div class="portal-section-title">💬 My Messages</div>
           <div class="my-messages-list" id="myMessagesList">
-            <div class="portal-empty">Loading…</div>
+            <div class="portal-empty">No messages yet</div>
           </div>
         </div>
 
@@ -287,6 +302,12 @@
         }
       }
       updateNavLoginState();
+
+      // Set Google OAuth buttons to return to current page
+      const googleReturnUrl = encodeURIComponent(location.origin + location.pathname);
+      document.querySelectorAll('#googleBtn').forEach(btn => {
+        btn.href = `${API_URL}/members/auth/google?returnUrl=${googleReturnUrl}`;
+      });
 
       // ── Auth UI toggles ────────────────────────────
       const authCards = ['loginCard','registerCard','sentCard','forgotCard','resetCard'];
@@ -372,6 +393,64 @@
           btn.disabled = false; btn.textContent = 'Send Verification Email';
         }
       });
+
+      // OTP box auto-advance
+      document.addEventListener('input', e => {
+        if (!e.target.classList.contains('otp-box')) return;
+        const boxes = [...document.querySelectorAll('.otp-box')];
+        const i = boxes.indexOf(e.target);
+        if (e.target.value && i < 5) boxes[i + 1].focus();
+      });
+      document.addEventListener('keydown', e => {
+        if (!e.target.classList.contains('otp-box')) return;
+        const boxes = [...document.querySelectorAll('.otp-box')];
+        const i = boxes.indexOf(e.target);
+        if (e.key === 'Backspace' && !e.target.value && i > 0) boxes[i - 1].focus();
+        if (e.key === 'Enter') verifyWithCode();
+      });
+
+      async function verifyWithCode() {
+        const boxes = [...document.querySelectorAll('.otp-box')];
+        const code = boxes.map(b => b.value).join('').trim();
+        if (code.length !== 6) { showMsg('verifyCodeMsg', 'Enter the 6-digit code', 'error'); return; }
+        const btn = document.getElementById('verifyCodeBtn');
+        btn.disabled = true; btn.textContent = 'Verifying…';
+        try {
+          const res = await fetch(`${API_URL}/members/magic/verify-code`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email: sentEmail, code })
+          });
+          const data = await res.json();
+          if (!res.ok) throw new Error(data.error || 'Verification failed');
+          localStorage.setItem('memberToken', data.memberToken);
+          window.location.reload();
+        } catch (err) {
+          showMsg('verifyCodeMsg', err.message, 'error');
+        } finally {
+          btn.disabled = false; btn.textContent = 'Verify';
+        }
+      }
+
+      async function resendVerification() {
+        if (!sentEmail) return;
+        const btn = document.getElementById('resendBtn');
+        btn.disabled = true; btn.textContent = 'Sending…';
+        try {
+          const res = await fetch(`${API_URL}/members/magic/resend`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email: sentEmail })
+          });
+          const data = await res.json();
+          if (!res.ok) throw new Error(data.error || 'Failed to resend');
+          showMsg('resendMsg', '✅ Email resent! Check your inbox.', 'success');
+        } catch (err) {
+          showMsg('resendMsg', err.message, 'error');
+        } finally {
+          btn.disabled = false; btn.textContent = 'Resend Email';
+        }
+      }
 
       // ── Forgot password ────────────────────────────
       document.getElementById('forgotForm').addEventListener('submit', async (e) => {
@@ -604,15 +683,20 @@
               ? new Date(ev.date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })
               : 'No date';
             const cat = ev.event_category || (ev.kind === 'album' ? 'Album' : 'Event');
+            const thumb = ev.image_url
+              ? `<img class="saved-event-thumb" src="${ev.image_url}" alt="">`
+              : `<div class="saved-event-thumb-placeholder">${ev.kind === 'album' ? '📁' : '🎵'}</div>`;
             return `
               <div class="saved-event-item">
-                <div style="font-size:24px;flex-shrink:0;">${ev.kind === 'album' ? '📁' : '🎵'}</div>
+                ${thumb}
                 <div class="saved-event-info">
                   <div class="saved-event-title">${ev.title}</div>
-                  <div class="saved-event-meta">${cat} · ${dateStr}</div>
+                  <div class="saved-event-meta"><span class="saved-event-cat">${cat}</span> · ${dateStr}</div>
                 </div>
-                <a href="calendar.html" style="font-size:12px;color:var(--pink);text-decoration:none;white-space:nowrap;">View →</a>
-                <button class="saved-event-unsave" title="Remove" onclick="unsaveEvent(${ev.id}, this)">⭐</button>
+                <div class="saved-event-actions">
+                  <a href="event.html?id=${ev.id}" class="saved-event-view">View →</a>
+                  <button class="saved-event-unsave" title="Remove" onclick="unsaveEvent(${ev.id}, this)">★</button>
+                </div>
               </div>`;
           }).join('');
         } catch (err) {
@@ -621,6 +705,7 @@
       }
 
       async function unsaveEvent(eventId, btn) {
+        if (!confirm('Remove this event from saved?')) return;
         btn.disabled = true;
         await fetch(`${API_URL}/members/saves/events/${eventId}`, {
           method: 'DELETE',
@@ -654,6 +739,7 @@
       }
 
       async function unsavePhoto(photoId, btn) {
+        if (!confirm('Remove this photo from saved?')) return;
         btn.disabled = true;
         await fetch(`${API_URL}/members/saves/photos/${photoId}`, {
           method: 'DELETE',

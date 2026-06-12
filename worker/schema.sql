@@ -113,3 +113,15 @@ CREATE TABLE IF NOT EXISTS inventory (
   quantity INTEGER DEFAULT 1,
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
+
+CREATE TABLE IF NOT EXISTS magic_tokens (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  token TEXT NOT NULL UNIQUE,
+  email TEXT NOT NULL,
+  display_name TEXT,
+  password_hash TEXT,
+  email_updates INTEGER DEFAULT 0,
+  purpose TEXT NOT NULL,
+  expires_at DATETIME NOT NULL,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);

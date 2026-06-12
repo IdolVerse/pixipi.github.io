@@ -107,7 +107,7 @@ async function sendEmail(apiKey: string, to: string, subject: string, html: stri
     method: 'POST',
     headers: { 'api-key': apiKey, 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      sender: { name: 'Pixipi', email: 'no-reply@pixipi.com' },
+      sender: { name: 'Pixipi', email: 'no-reply@pixipiexe.com' },
       to: [{ email: to }],
       subject,
       htmlContent: html,
@@ -126,28 +126,68 @@ membersRouter.post('/magic/send', async (c) => {
     const existing = await dbFirst(c.env.DB, 'SELECT id FROM members WHERE LOWER(email)=LOWER(?)', email)
     if (existing) return c.json({ error: 'Email already registered' }, 409)
 
-    const hash = await bcrypt.hash(password, 8)
+    // Clean up expired tokens
+    await dbRun(c.env.DB, 'DELETE FROM magic_tokens WHERE expires_at < ?', Math.floor(Date.now() / 1000))
     await dbRun(c.env.DB, 'DELETE FROM magic_tokens WHERE LOWER(email)=LOWER(?) AND purpose=?', email, 'verify')
 
+    const hash = await bcrypt.hash(password, 8)
     const token = generateToken()
+    const code = String(Math.floor(100000 + Math.random() * 900000))
     const expiresAt = Math.floor(Date.now() / 1000) + 15 * 60
     await dbRun(c.env.DB,
-      'INSERT INTO magic_tokens (token, email, display_name, password_hash, email_updates, purpose, expires_at) VALUES (?,?,?,?,?,?,?)',
-      token, email, display_name, hash, email_updates ? 1 : 0, 'verify', expiresAt,
+      'INSERT INTO magic_tokens (token, code, email, display_name, password_hash, email_updates, purpose, expires_at) VALUES (?,?,?,?,?,?,?,?)',
+      token, code, email, display_name, hash, email_updates ? 1 : 0, 'verify', expiresAt,
     )
 
-    const baseUrl = c.env.FRONTEND_URL || 'https://pixipi.github.io'
+    const baseUrl = c.env.FRONTEND_URL || 'https://pixipiexe.com'
     const verifyUrl = `https://api.cocolee-k2.workers.dev/api/members/magic/verify?token=${token}&return=${encodeURIComponent(baseUrl + '/portal.html')}`
 
     await sendEmail(c.env.BREVO_API_KEY, email, '🌸 Verify your Pixipi account', `
       <div style="font-family:Arial,sans-serif;max-width:480px;margin:0 auto;padding:32px 24px;background:#fff;border-radius:16px">
         <h2 style="color:#d946a6">Pixipi</h2>
-        <p style="color:#333;font-size:15px;line-height:1.6">Click the button below to verify your email and create your account.<br>This link expires in <strong>15 minutes</strong>.</p>
-        <a href="${verifyUrl}" style="display:inline-block;margin:24px 0;padding:14px 28px;background:linear-gradient(135deg,#d946a6,#ec4899);color:#fff;text-decoration:none;border-radius:10px;font-size:15px;font-weight:700">✉️ Verify Email</a>
-        <p style="color:#888;font-size:12px">If you didn't request this, you can ignore this email.</p>
-      </div>`
+        <p style="color:#333;font-size:15px;line-height:1.6">Use the code below or click the button to verify your email.<br>Expires in <strong>15 minutes</strong>.</p>
+        <div style="font-size:36px;font-weight:700;letter-spacing:10px;text-align:center;padding:20px;background:#fdf2ff;border-radius:12px;color:#d946a6;margin:20px 0">${code}</div>
+        <p style="text-align:center;color:#666;font-size:13px;margin:0 0 16px">— or —</p>
+        <a href="${verifyUrl}" style="display:block;text-align:center;padding:14px 28px;background:linear-gradient(135deg,#d946a6,#ec4899);color:#fff;text-decoration:none;border-radius:10px;font-size:15px;font-weight:700">✉️ Verify via Link</a>
+        <p style="color:#888;font-size:12px;margin-top:20px">If you didn't request this, you can ignore this email.</p>
+      </div>`)
+
+    return c.json({ sent: true })
+  } catch (err: any) { return c.json({ error: err.message }, 500) }
+})
+
+membersRouter.post('/magic/resend', async (c) => {
+  try {
+    const { email } = await c.req.json<any>()
+    if (!email) return c.json({ error: 'Email required' }, 400)
+
+    const row = await dbFirst(c.env.DB,
+      'SELECT * FROM magic_tokens WHERE LOWER(email)=LOWER(?) AND purpose=? ORDER BY id DESC LIMIT 1',
+      email, 'verify'
+    )
+    if (!row) return c.json({ error: 'No pending verification for this email' }, 404)
+
+    await dbRun(c.env.DB, 'DELETE FROM magic_tokens WHERE expires_at < ?', Math.floor(Date.now() / 1000))
+    await dbRun(c.env.DB, 'DELETE FROM magic_tokens WHERE LOWER(email)=LOWER(?) AND purpose=?', email, 'verify')
+    const token = generateToken()
+    const code = String(Math.floor(100000 + Math.random() * 900000))
+    const expiresAt = Math.floor(Date.now() / 1000) + 15 * 60
+    await dbRun(c.env.DB,
+      'INSERT INTO magic_tokens (token, code, email, display_name, password_hash, email_updates, purpose, expires_at) VALUES (?,?,?,?,?,?,?,?)',
+      token, code, email, row.display_name, row.password_hash, row.email_updates, 'verify', expiresAt,
     )
 
+    const baseUrl = c.env.FRONTEND_URL || 'https://pixipiexe.com'
+    const verifyUrl = `https://api.cocolee-k2.workers.dev/api/members/magic/verify?token=${token}&return=${encodeURIComponent(baseUrl + '/portal.html')}`
+    await sendEmail(c.env.BREVO_API_KEY, email, '🌸 Verify your Pixipi account', `
+      <div style="font-family:Arial,sans-serif;max-width:480px;margin:0 auto;padding:32px 24px;background:#fff;border-radius:16px">
+        <h2 style="color:#d946a6">Pixipi</h2>
+        <p style="color:#333;font-size:15px;line-height:1.6">Use the code below or click the button to verify your email.<br>Expires in <strong>15 minutes</strong>.</p>
+        <div style="font-size:36px;font-weight:700;letter-spacing:10px;text-align:center;padding:20px;background:#fdf2ff;border-radius:12px;color:#d946a6;margin:20px 0">${code}</div>
+        <p style="text-align:center;color:#666;font-size:13px;margin:0 0 16px">— or —</p>
+        <a href="${verifyUrl}" style="display:block;text-align:center;padding:14px 28px;background:linear-gradient(135deg,#d946a6,#ec4899);color:#fff;text-decoration:none;border-radius:10px;font-size:15px;font-weight:700">✉️ Verify via Link</a>
+        <p style="color:#888;font-size:12px;margin-top:20px">If you didn't request this, you can ignore this email.</p>
+      </div>`)
     return c.json({ sent: true })
   } catch (err: any) { return c.json({ error: err.message }, 500) }
 })
@@ -174,6 +214,29 @@ membersRouter.get('/magic/verify', async (c) => {
     const jwt = await memberToken(member!, c.env.JWT_SECRET)
     return Response.redirect(`${returnUrl}?memberToken=${encodeURIComponent(jwt)}`, 302)
   } catch { return fail('Something went wrong') }
+})
+
+membersRouter.post('/magic/verify-code', async (c) => {
+  try {
+    const { email, code } = await c.req.json<any>()
+    if (!email || !code) return c.json({ error: 'Email and code required' }, 400)
+    const row = await dbFirst(c.env.DB,
+      'SELECT * FROM magic_tokens WHERE LOWER(email)=LOWER(?) AND code=? AND purpose=?',
+      email, String(code), 'verify'
+    )
+    if (!row) return c.json({ error: 'Invalid code' }, 400)
+    if (Number(row.expires_at) < Math.floor(Date.now() / 1000)) {
+      await dbRun(c.env.DB, 'DELETE FROM magic_tokens WHERE token=?', row.token)
+      return c.json({ error: 'Code expired — please request a new one' }, 400)
+    }
+    await dbRun(c.env.DB, 'DELETE FROM magic_tokens WHERE token=?', row.token)
+    const member = await dbFirst(c.env.DB,
+      'INSERT INTO members (display_name,email,password_hash,email_verified,email_updates) VALUES (?,?,?,1,?) RETURNING id,display_name,email,email_updates,created_at',
+      row.display_name, row.email, row.password_hash, Number(row.email_updates),
+    )
+    const jwt = await memberToken(member!, c.env.JWT_SECRET)
+    return c.json({ memberToken: jwt })
+  } catch (err: any) { return c.json({ error: err.message }, 500) }
 })
 
 membersRouter.post('/forgot-password', async (c) => {
@@ -250,18 +313,20 @@ membersRouter.post('/reset-password', async (c) => {
 
 membersRouter.get('/auth/google', (c) => {
   const redirectUri = 'https://api.cocolee-k2.workers.dev/api/members/auth/google/callback'
+  const returnUrl = c.req.query('returnUrl') || (c.env.FRONTEND_URL || 'https://pixipiexe.com') + '/portal.html'
   const params = new URLSearchParams({
     client_id: c.env.GOOGLE_CLIENT_ID,
     redirect_uri: redirectUri,
     response_type: 'code',
     scope: 'openid email profile',
     prompt: 'select_account',
+    state: returnUrl,
   })
   return Response.redirect(`https://accounts.google.com/o/oauth2/v2/auth?${params}`, 302)
 })
 
 membersRouter.get('/auth/google/callback', async (c) => {
-  const returnUrl = (c.env.FRONTEND_URL || 'https://pixipi.github.io/docs') + '/portal.html'
+  const returnUrl = c.req.query('state') || (c.env.FRONTEND_URL || 'https://pixipiexe.com') + '/portal.html'
   const fail = (msg: string) => Response.redirect(`${returnUrl}?authError=${encodeURIComponent(msg)}`, 302)
   const code = c.req.query('code')
   if (!code) return fail('Google login cancelled')
@@ -278,7 +343,10 @@ membersRouter.get('/auth/google/callback', async (c) => {
         redirect_uri: redirectUri,
       }),
     })
-    if (!tokenRes.ok) return fail('Google authentication failed')
+    if (!tokenRes.ok) {
+      const errBody = await tokenRes.text()
+      return fail(`Google authentication failed: ${errBody}`)
+    }
     const tokens = await tokenRes.json() as any
 
     const userRes = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
@@ -301,7 +369,7 @@ membersRouter.get('/auth/google/callback', async (c) => {
     const jwt = await memberToken(member!, c.env.JWT_SECRET)
     return Response.redirect(`${returnUrl}?memberToken=${encodeURIComponent(jwt)}`, 302)
   } catch (err: any) {
-    return fail('Something went wrong')
+    return fail('Something went wrong: ' + (err?.message || String(err)))
   }
 })
 

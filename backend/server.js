@@ -18,8 +18,7 @@ const PORT = process.env.PORT || 5000;
 
 // Middleware
 const allowedOrigins = [
-  'https://doll-trap.github.io',
-  'https://dolltrap.github.io',
+  'https://pixipi.github.io',
   /^http:\/\/localhost(:\d+)?$/,
   /^http:\/\/127\.0\.0\.1(:\d+)?$/,
 ];

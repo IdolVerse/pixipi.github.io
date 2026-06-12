@@ -1,5 +1,4 @@
 import { Hono } from 'hono'
-import { createClient } from '@supabase/supabase-js'
 import { dbFirst, dbAll, dbRun } from '../db'
 import { authMiddleware } from '../middleware/auth'
 import type { HonoEnv } from '../types'
@@ -21,14 +20,14 @@ eventsRouter.post('/upload-poster', authMiddleware, async (c) => {
       return c.json({ error: 'Invalid file type' }, 400)
     if (file.size > 20 * 1024 * 1024) return c.json({ error: 'File too large (max 20MB)' }, 400)
 
-    const supabase = createClient(c.env.SUPABASE_URL, c.env.SUPABASE_SERVICE_ROLE_KEY)
-    const ext = file.name.includes('.') ? '.' + file.name.split('.').pop() : ''
-    const filePath = `posters/poster-${Date.now()}-${Math.round(Math.random() * 1e9)}${ext}`
-    const { error } = await supabase.storage.from('doll-trap').upload(filePath, await file.arrayBuffer(), { contentType: file.type, upsert: false })
-    if (error) return c.json({ error: error.message }, 500)
+    const ext = file.name.includes('.') ? '.' + file.name.split('.').pop()!.toLowerCase() : ''
+    const key = `posters/poster-${Date.now()}-${Math.round(Math.random() * 1e9)}${ext}`
+    await c.env.R2.put(key, await file.arrayBuffer(), {
+      httpMetadata: { contentType: file.type },
+    })
 
-    const { data: { publicUrl } } = supabase.storage.from('doll-trap').getPublicUrl(filePath)
-    return c.json({ url: publicUrl })
+    const url = `${c.env.R2_PUBLIC_URL.replace(/\/$/, '')}/${key}`
+    return c.json({ url })
   } catch (err: any) {
     return c.json({ error: err.message }, 500)
   }

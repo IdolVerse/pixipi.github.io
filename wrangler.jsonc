@@ -1,6 +1,6 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "dolltrap-github-io",
+  "name": "pixipi-github-io",
   "compatibility_date": "2026-05-02",
   "observability": {
     "enabled": true

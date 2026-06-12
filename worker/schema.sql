@@ -1,5 +1,5 @@
 -- Cloudflare D1 schema (SQLite)
--- Run: npx wrangler d1 execute dolltrap-db --file=schema.sql
+-- Run: npx wrangler d1 execute pixipi-db --file=schema.sql
 
 CREATE TABLE IF NOT EXISTS users (
   id INTEGER PRIMARY KEY AUTOINCREMENT,

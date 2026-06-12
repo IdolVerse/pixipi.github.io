@@ -4,7 +4,6 @@ Official fan club website for **Pixipi**, a Seattle-based virtual idol group wit
 
 **Stack:** GitHub Pages (frontend) · Cloudflare Workers + D1 (backend + database) · Supabase Storage (images)
 
-> Note: The Cloudflare worker and D1 database still use legacy `dolltrap` identifiers in their infrastructure names (`api.dolltrap.workers.dev`, `dolltrap-db`). These are production values and safe to ignore from a branding perspective.
 
 Events and albums share the same `events` table, distinguished by `kind = 'event' | 'album'`. The calendar and home page only show `kind = 'event'`; the gallery and admin can also manage albums.
 
@@ -13,7 +12,7 @@ Events and albums share the same `events` table, distinguished by `kind = 'event
 ## Project Structure
 
 ```
-dolltrap.github.io/
+pixipi.github.io/
 ├── docs/                     # Frontend (GitHub Pages root)
 │   ├── index.html            # Home page
 │   ├── members.html          # Members profile page
@@ -115,8 +114,8 @@ npx wrangler secret put SUPABASE_SERVICE_ROLE_KEY
 
 **Cloudflare D1** (SQLite) — bound as `DB` in the Worker.
 
-- Database name: `dolltrap-db`
-- Apply schema: `npx wrangler d1 execute dolltrap-db --file=schema.sql --remote`
+- Database name: `pixipi-db`
+- Apply schema: `npx wrangler d1 execute pixipi-db --file=schema.sql --remote`
 
 ### Schema summary
 
@@ -137,7 +136,7 @@ npx wrangler secret put SUPABASE_SERVICE_ROLE_KEY
 
 ## API Endpoints
 
-Base URL: `https://api.dolltrap.workers.dev/api`
+Base URL: `https://api.pixipi.workers.dev/api`
 
 ### Admin auth — `/api/auth`
 | Method | Path | Auth | Description |
@@ -208,7 +207,7 @@ cd worker && npx wrangler deploy
 
 ## Production Checklist
 
-- [x] CORS restricted to `dolltrap.github.io` and `localhost`
+- [x] CORS restricted to `pixipi.github.io` and `localhost`
 - [x] Images stored in Supabase Storage (persistent)
 - [x] Database on Cloudflare D1 (no cold start)
 - [x] Photo/poster uploads auto-compressed to 1500px before storage
@@ -228,7 +227,7 @@ cd worker && npx wrangler deploy
 
 **Calendar/list empty:** Make sure dates are stored correctly. SQLite uses `YYYY-MM-DD HH:MM:SS` format; the frontend uses `substring(0, 10)` to extract the date key.
 
-**CORS errors in browser:** Access the site from `localhost` or `dolltrap.github.io`, not `file://`.
+**CORS errors in browser:** Access the site from `localhost` or `pixipi.github.io`, not `file://`.
 
 ---
 

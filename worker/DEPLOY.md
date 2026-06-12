@@ -69,7 +69,7 @@ npm run deploy
 部署成功后会输出 Worker URL，格式类似：
 
 ```
-https://dolltrap-worker.YOUR_SUBDOMAIN.workers.dev
+https://pixipi-worker.YOUR_SUBDOMAIN.workers.dev
 ```
 
 ---

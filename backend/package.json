@@ -1,7 +1,7 @@
 {
-  "name": "doll-trap-backend",
+  "name": "pixipi-backend",
   "version": "1.0.0",
-  "description": "Doll Trap backend API with admin uploads and future game features",
+  "description": "Pixipi backend API with admin uploads and future game features",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",

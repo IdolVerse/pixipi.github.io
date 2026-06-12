@@ -107,7 +107,7 @@ async function sendEmail(apiKey: string, to: string, subject: string, html: stri
     method: 'POST',
     headers: { 'api-key': apiKey, 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      sender: { name: 'Pixipi', email: 'no-reply@dolltrap.com' },
+      sender: { name: 'Pixipi', email: 'no-reply@pixipi.com' },
       to: [{ email: to }],
       subject,
       htmlContent: html,
@@ -136,12 +136,12 @@ membersRouter.post('/magic/send', async (c) => {
       token, email, display_name, hash, email_updates ? 1 : 0, 'verify', expiresAt,
     )
 
-    const baseUrl = c.env.FRONTEND_URL || 'https://doll-trap.github.io'
-    const verifyUrl = `https://api.dolltrap.workers.dev/api/members/magic/verify?token=${token}&return=${encodeURIComponent(baseUrl + '/portal.html')}`
+    const baseUrl = c.env.FRONTEND_URL || 'https://pixipi.github.io'
+    const verifyUrl = `https://api.cocolee-k2.workers.dev/api/members/magic/verify?token=${token}&return=${encodeURIComponent(baseUrl + '/portal.html')}`
 
-    await sendEmail(c.env.BREVO_API_KEY, email, '🌸 Verify your Doll Trap account', `
+    await sendEmail(c.env.BREVO_API_KEY, email, '🌸 Verify your Pixipi account', `
       <div style="font-family:Arial,sans-serif;max-width:480px;margin:0 auto;padding:32px 24px;background:#fff;border-radius:16px">
-        <h2 style="color:#d946a6">Doll Trap</h2>
+        <h2 style="color:#d946a6">Pixipi</h2>
         <p style="color:#333;font-size:15px;line-height:1.6">Click the button below to verify your email and create your account.<br>This link expires in <strong>15 minutes</strong>.</p>
         <a href="${verifyUrl}" style="display:inline-block;margin:24px 0;padding:14px 28px;background:linear-gradient(135deg,#d946a6,#ec4899);color:#fff;text-decoration:none;border-radius:10px;font-size:15px;font-weight:700">✉️ Verify Email</a>
         <p style="color:#888;font-size:12px">If you didn't request this, you can ignore this email.</p>
@@ -154,7 +154,7 @@ membersRouter.post('/magic/send', async (c) => {
 
 membersRouter.get('/magic/verify', async (c) => {
   const token = c.req.query('token')
-  const returnUrl = c.req.query('return') || 'https://doll-trap.github.io/portal.html'
+  const returnUrl = c.req.query('return') || 'https://pixipi.github.io/portal.html'
   const fail = (msg: string) => Response.redirect(`${returnUrl}?authError=${encodeURIComponent(msg)}`, 302)
 
   if (!token) return fail('Missing token')
@@ -193,11 +193,11 @@ membersRouter.post('/forgot-password', async (c) => {
       token, email, 'reset', expiresAt,
     )
 
-    const baseUrl = c.env.FRONTEND_URL || 'https://doll-trap.github.io'
-    const resetUrl = `https://api.dolltrap.workers.dev/api/members/reset-password/verify?token=${token}&return=${encodeURIComponent(baseUrl + '/portal.html')}`
-    await sendEmail(c.env.BREVO_API_KEY, email, '🔑 Reset your Doll Trap password', `
+    const baseUrl = c.env.FRONTEND_URL || 'https://pixipi.github.io'
+    const resetUrl = `https://api.cocolee-k2.workers.dev/api/members/reset-password/verify?token=${token}&return=${encodeURIComponent(baseUrl + '/portal.html')}`
+    await sendEmail(c.env.BREVO_API_KEY, email, '🔑 Reset your Pixipi password', `
       <div style="font-family:Arial,sans-serif;max-width:480px;margin:0 auto;padding:32px 24px;background:#fff;border-radius:16px">
-        <h2 style="color:#d946a6">Doll Trap</h2>
+        <h2 style="color:#d946a6">Pixipi</h2>
         <p style="color:#333;font-size:15px;line-height:1.6">Click the button below to reset your password. This link expires in <strong>15 minutes</strong>.</p>
         <a href="${resetUrl}" style="display:inline-block;margin:24px 0;padding:14px 28px;background:linear-gradient(135deg,#d946a6,#ec4899);color:#fff;text-decoration:none;border-radius:10px;font-size:15px;font-weight:700">🔑 Reset Password</a>
         <p style="color:#888;font-size:12px">If you didn't request this, you can ignore this email.</p>
@@ -210,7 +210,7 @@ membersRouter.post('/forgot-password', async (c) => {
 
 membersRouter.get('/reset-password/verify', async (c) => {
   const token = c.req.query('token')
-  const returnUrl = c.req.query('return') || 'https://doll-trap.github.io/portal.html'
+  const returnUrl = c.req.query('return') || 'https://pixipi.github.io/portal.html'
   const fail = (msg: string) => Response.redirect(`${returnUrl}?authError=${encodeURIComponent(msg)}`, 302)
 
   if (!token) return fail('Missing token')
@@ -249,7 +249,7 @@ membersRouter.post('/reset-password', async (c) => {
 // ── Google OAuth ──────────────────────────────────────────────
 
 membersRouter.get('/auth/google', (c) => {
-  const redirectUri = 'https://api.dolltrap.workers.dev/api/members/auth/google/callback'
+  const redirectUri = 'https://api.cocolee-k2.workers.dev/api/members/auth/google/callback'
   const params = new URLSearchParams({
     client_id: c.env.GOOGLE_CLIENT_ID,
     redirect_uri: redirectUri,
@@ -261,13 +261,13 @@ membersRouter.get('/auth/google', (c) => {
 })
 
 membersRouter.get('/auth/google/callback', async (c) => {
-  const returnUrl = (c.env.FRONTEND_URL || 'https://dolltrap.github.io/docs') + '/portal.html'
+  const returnUrl = (c.env.FRONTEND_URL || 'https://pixipi.github.io/docs') + '/portal.html'
   const fail = (msg: string) => Response.redirect(`${returnUrl}?authError=${encodeURIComponent(msg)}`, 302)
   const code = c.req.query('code')
   if (!code) return fail('Google login cancelled')
 
   try {
-    const redirectUri = 'https://api.dolltrap.workers.dev/api/members/auth/google/callback'
+    const redirectUri = 'https://api.cocolee-k2.workers.dev/api/members/auth/google/callback'
     const tokenRes = await fetch('https://oauth2.googleapis.com/token', {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },

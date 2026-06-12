@@ -33,10 +33,10 @@
             </div>
           </div>
           <div class="win98-menubar">
-            <span class="win98-menubar-item">File</span>
-            <span class="win98-menubar-item">Members</span>
-            <span class="win98-menubar-item">Events</span>
-            <span class="win98-menubar-item">Help</span>
+            <a class="win98-menubar-item" href="#about">File</a>
+            <a class="win98-menubar-item" href="members.html">Members</a>
+            <a class="win98-menubar-item" href="calendar.html">Events</a>
+            <a class="win98-menubar-item" href="contact.html">Help</a>
           </div>
           <div class="hero-window-body">
             <p class="hero-kicker">Seattle idol group</p>
@@ -49,7 +49,7 @@
     </div>
 
     <!-- About Section -->
-    <div class="about-wrap">
+    <div class="about-wrap" id="about">
       <div class="about-badge">★ Pixipi ★</div>
       <div class="about-card">
         <div class="about-divider">✦ ── ♡ ── ★ ── ♡ ── ✦ ── ♡ ── ★ ── ♡ ── ✦</div>
@@ -116,8 +116,8 @@
 
     <script>
       const API_URL = location.hostname === 'localhost' || location.hostname === '127.0.0.1'
-        ? 'http://localhost:8787/api'
-        : 'https://api.dolltrap.workers.dev/api';
+        ? 'https://api.cocolee-k2.workers.dev/api'
+        : 'https://api.cocolee-k2.workers.dev/api';
       const API_ORIGIN = API_URL.replace('/api', '');
       const authToken = localStorage.getItem('authToken');
       const EVENT_CATEGORY_OPTIONS = ['Live', 'Performance', 'Community Event', 'Convention', 'Workshop', 'Collaboration', 'Other'];

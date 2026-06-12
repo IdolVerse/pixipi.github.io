@@ -4,31 +4,31 @@
    Win98 Dreamcore — Design Tokens
    ======================================== */
 :root {
-  /* lavender palette */
-  --lav-0:   #f7f3ff;   /* near-white */
-  --lav-1:   #ede5ff;   /* page bg */
-  --lav-2:   #ddd0f8;   /* card bg */
-  --lav-3:   #c4aff0;   /* mid */
-  --lav-4:   #a888e0;   /* border dark */
-  --lav-5:   #7c5aad;   /* deep purple */
-  --lav-6:   #3d2466;   /* text primary */
+  /* pearl / holographic palette */
+  --lav-0:   #f8f9ff;   /* blue-white */
+  --lav-1:   #eeeffe;   /* page bg — pearl */
+  --lav-2:   #dfe1f8;   /* card bg — soft periwinkle */
+  --lav-3:   #a8b4e8;   /* mid */
+  --lav-4:   #7080cc;   /* border */
+  --lav-5:   #3848a0;   /* deep blue */
+  --lav-6:   #0c1440;   /* darkest navy */
   /* win98 inset/outset */
-  --w-light: #f4f0ff;
-  --w-dark:  #4a2878;
+  --w-light: #f0f4ff;
+  --w-dark:  #4460a8;
   --w-black: #000;
   /* accents */
-  --pink:    #f0a0c8;
-  --pink-d:  #d46a9a;
-  --blue:    #90b8f0;
-  --yellow:  #f0d870;
-  --red:     #f87171;
-  --orange:  #fb923c;
-  /* titlebar gradient */
-  --tb-from: #9b7fd4;
-  --tb-to:   #c4a8e8;
+  --pink:    #c8b8f0;   /* soft lavender pearl */
+  --pink-d:  #9878d8;
+  --blue:    #60b0f8;   /* electric blue */
+  --yellow:  #e8e060;
+  --red:     #e07070;
+  --orange:  #e09850;
+  /* titlebar — holographic blue-violet */
+  --tb-from: #1e3080;
+  --tb-to:   #6880d8;
   /* text */
-  --text:    #3d2466;
-  --text-2:  #7c5aad;
+  --text:    #0c1440;
+  --text-2:  #3848a0;
   /* font */
   --pixel:   'Press Start 2P', monospace;
   --body:    'Nunito', Arial, sans-serif;
@@ -39,15 +39,50 @@
    ======================================== */
 *, *::before, *::after { box-sizing: border-box; }
 
+/* ── Holographic sweep animation ── */
+@keyframes holo-sweep {
+  0%   { background-position: 0% 0%;   opacity: 0.5; }
+  50%  { background-position: 100% 100%; opacity: 0.9; }
+  100% { background-position: 0% 0%;   opacity: 0.5; }
+}
+@keyframes sparkle-pulse {
+  0%, 100% { opacity: 0.6; }
+  50%       { opacity: 1.0; }
+}
+
+html::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(
+    125deg,
+    transparent            0%,
+    rgba(160, 80,255,0.18) 12%,
+    rgba( 60,180,255,0.22) 26%,
+    rgba(255,120,255,0.16) 40%,
+    rgba( 60,240,210,0.20) 55%,
+    rgba(200, 80,255,0.18) 70%,
+    rgba( 80,200,255,0.16) 84%,
+    transparent            100%
+  );
+  background-size: 400% 400%;
+  animation: holo-sweep 8s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+
 body {
   margin: 0;
   font-family: var(--body);
   color: var(--text);
   background-color: var(--lav-1);
   background-image:
-    radial-gradient(ellipse at 15% 10%, rgba(240,160,200,0.22) 0%, transparent 45%),
-    radial-gradient(ellipse at 85% 15%, rgba(144,184,240,0.18) 0%, transparent 45%),
-    radial-gradient(ellipse at 50% 85%, rgba(168,136,224,0.15) 0%, transparent 50%);
+    radial-gradient(ellipse at 18%  8%, rgba(180,100,255,0.55) 0%, rgba(180,100,255,0.10) 35%, transparent 55%),
+    radial-gradient(ellipse at 82%  6%, rgba(60,160,255,0.50)  0%, rgba(60,160,255,0.08) 32%, transparent 52%),
+    radial-gradient(ellipse at 50% 80%, rgba(120,80,255,0.40)  0%, rgba(120,80,255,0.06) 38%, transparent 56%),
+    radial-gradient(ellipse at  3% 52%, rgba(200,120,255,0.38) 0%, rgba(200,120,255,0.05) 30%, transparent 48%),
+    radial-gradient(ellipse at 95% 52%, rgba(60,220,200,0.32)  0%, rgba(60,220,200,0.05) 28%, transparent 45%),
+    radial-gradient(ellipse at 50% 38%, rgba(140,100,255,0.18) 0%, transparent 60%);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -55,14 +90,14 @@ body {
   overflow-x: hidden;
 }
 
-/* subtle pixel grid */
+/* pixel grid */
 body::before {
   content: '';
   position: fixed;
   inset: 0;
   background-image:
-    linear-gradient(rgba(168,136,224,0.06) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(168,136,224,0.06) 1px, transparent 1px);
+    linear-gradient(rgba(120,100,220,0.09) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(120,100,220,0.09) 1px, transparent 1px);
   background-size: 16px 16px;
   pointer-events: none;
   z-index: 0;
@@ -74,19 +109,25 @@ body::after {
   position: fixed;
   inset: 0;
   background-image:
-    radial-gradient(2px 2px at  7%  5%, rgba(168,136,224,0.6) 0%, transparent 100%),
-    radial-gradient(2px 2px at 22% 12%, rgba(240,160,200,0.5) 0%, transparent 100%),
-    radial-gradient(2px 2px at 38%  3%, rgba(144,184,240,0.5) 0%, transparent 100%),
-    radial-gradient(2px 2px at 55%  9%, rgba(168,136,224,0.5) 0%, transparent 100%),
-    radial-gradient(2px 2px at 70%  4%, rgba(240,160,200,0.5) 0%, transparent 100%),
-    radial-gradient(2px 2px at 85%  8%, rgba(144,184,240,0.5) 0%, transparent 100%),
-    radial-gradient(2px 2px at 93% 15%, rgba(168,136,224,0.4) 0%, transparent 100%),
-    radial-gradient(2px 2px at 12% 30%, rgba(240,160,200,0.3) 0%, transparent 100%),
-    radial-gradient(2px 2px at 80% 28%, rgba(144,184,240,0.3) 0%, transparent 100%),
-    radial-gradient(2px 2px at 45% 55%, rgba(240,216,112,0.4) 0%, transparent 100%),
-    radial-gradient(2px 2px at 28% 70%, rgba(168,136,224,0.25) 0%, transparent 100%),
-    radial-gradient(2px 2px at 65% 75%, rgba(240,160,200,0.25) 0%, transparent 100%),
-    radial-gradient(2px 2px at 88% 65%, rgba(144,184,240,0.2) 0%, transparent 100%);
+    radial-gradient(3px 3px at  7%  5%, rgba(255,255,255,0.95) 0%, transparent 100%),
+    radial-gradient(2px 2px at 22% 12%, rgba(120,200,255,0.90) 0%, transparent 100%),
+    radial-gradient(3px 3px at 38%  3%, rgba(220,160,255,0.90) 0%, transparent 100%),
+    radial-gradient(2px 2px at 55%  9%, rgba(255,255,255,0.85) 0%, transparent 100%),
+    radial-gradient(3px 3px at 70%  4%, rgba(120,200,255,0.88) 0%, transparent 100%),
+    radial-gradient(2px 2px at 85%  8%, rgba(220,160,255,0.85) 0%, transparent 100%),
+    radial-gradient(3px 3px at 93% 15%, rgba(255,255,255,0.80) 0%, transparent 100%),
+    radial-gradient(2px 2px at 15% 28%, rgba(120,240,220,0.75) 0%, transparent 100%),
+    radial-gradient(3px 3px at 48% 22%, rgba(255,255,255,0.80) 0%, transparent 100%),
+    radial-gradient(2px 2px at 78% 30%, rgba(220,160,255,0.70) 0%, transparent 100%),
+    radial-gradient(4px 4px at 30% 50%, rgba(255,255,255,0.60) 0%, transparent 100%),
+    radial-gradient(2px 2px at 62% 48%, rgba(120,200,255,0.65) 0%, transparent 100%),
+    radial-gradient(3px 3px at 45% 68%, rgba(220,160,255,0.55) 0%, transparent 100%),
+    radial-gradient(2px 2px at 88% 62%, rgba(255,255,255,0.55) 0%, transparent 100%),
+    radial-gradient(3px 3px at 12% 75%, rgba(120,200,255,0.50) 0%, transparent 100%),
+    radial-gradient(2px 2px at 72% 80%, rgba(232,220,80,0.60)  0%, transparent 100%),
+    radial-gradient(3px 3px at 25% 88%, rgba(255,255,255,0.45) 0%, transparent 100%),
+    radial-gradient(2px 2px at 58% 90%, rgba(220,160,255,0.40) 0%, transparent 100%);
+  animation: sparkle-pulse 4s ease-in-out infinite;
   pointer-events: none;
   z-index: 0;
 }
@@ -190,6 +231,7 @@ body::after {
   cursor: pointer;
   border: 1px solid transparent;
   border-radius: 0;
+  text-decoration: none;
 }
 
 .win98-menubar-item:hover {
@@ -300,7 +342,11 @@ nav #loginNavBtn:hover {
 .hero {
   height: 100vh;
   min-height: 100vh;
-  background: linear-gradient(160deg, #f0e8ff 0%, #e8d8ff 40%, #dde8ff 100%);
+  background:
+    radial-gradient(ellipse at 15% 25%, rgba(180,100,255,0.50) 0%, transparent 45%),
+    radial-gradient(ellipse at 85% 20%, rgba(60,160,255,0.45)  0%, transparent 42%),
+    radial-gradient(ellipse at 50% 85%, rgba(100,220,255,0.35) 0%, transparent 40%),
+    linear-gradient(160deg, #e8e4ff 0%, #d8dcff 30%, #c8d8ff 60%, #d4e8ff 100%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -316,8 +362,8 @@ nav #loginNavBtn:hover {
   position: absolute;
   inset: 0;
   background-image:
-    linear-gradient(rgba(168,136,224,0.07) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(168,136,224,0.07) 1px, transparent 1px);
+    linear-gradient(rgba(104,128,216,0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(104,128,216,0.07) 1px, transparent 1px);
   background-size: 24px 24px;
   pointer-events: none;
 }
@@ -425,7 +471,7 @@ nav #loginNavBtn:hover {
   border-left:   2px solid var(--w-light);
   border-right:  2px solid var(--w-dark);
   border-bottom: 2px solid var(--w-dark);
-  box-shadow: 2px 2px 0 rgba(61,36,102,0.15);
+  box-shadow: 2px 2px 0 rgba(24,36,56,0.12);
   padding: 36px 40px 28px;
   box-sizing: border-box;
 }
@@ -882,7 +928,7 @@ footer span { color: var(--lav-3); margin: 0 6px; }
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(61,36,102,0.5);
+  background: rgba(24,36,56,0.50);
   z-index: 200;
   display: flex;
   align-items: center;
@@ -974,7 +1020,7 @@ footer span { color: var(--lav-3); margin: 0 6px; }
 .gallery-lightbox {
   position: fixed;
   inset: 0;
-  background: rgba(61,36,102,0.88);
+  background: rgba(24,36,56,0.88);
   z-index: 300;
   display: flex;
   align-items: center;
@@ -1411,11 +1457,11 @@ footer span { color: var(--lav-3); margin: 0 6px; }
 .vw-play-overlay {
   position: absolute; inset: 0;
   display: flex; align-items: center; justify-content: center;
-  background: rgba(61,36,102,0.3);
+  background: rgba(24,36,56,0.28);
   transition: background 0.2s;
 }
 
-.vw-card:hover .vw-play-overlay { background: rgba(61,36,102,0.15); }
+.vw-card:hover .vw-play-overlay { background: rgba(24,36,56,0.12); }
 
 .vw-play-btn {
   width: 44px; height: 44px;
@@ -1434,7 +1480,7 @@ footer span { color: var(--lav-3); margin: 0 6px; }
 /* floating video modal */
 .vw-window {
   position: fixed; inset: 0;
-  background: rgba(61,36,102,0.7);
+  background: rgba(24,36,56,0.68);
   z-index: 500;
   display: none;
   align-items: center;
@@ -1976,7 +2022,7 @@ footer span { color: var(--lav-3); margin: 0 6px; }
   border-left:   2px solid var(--w-light);
   border-right:  2px solid var(--w-dark);
   border-bottom: 2px solid var(--w-dark);
-  box-shadow: 2px 2px 0 rgba(61,36,102,0.15);
+  box-shadow: 2px 2px 0 rgba(24,36,56,0.12);
   min-width: 150px;
   z-index: 200;
   overflow: hidden;
@@ -2180,8 +2226,40 @@ footer span { color: var(--lav-3); margin: 0 6px; }
   padding: 8px 12px; text-shadow: 1px 1px 0 rgba(0,0,0,0.2);
 }
 
-.cal-logo { padding: 8px 12px 0; }
-.cal-logo img { width: 48px; height: 48px; object-fit: contain; image-rendering: pixelated; }
+.cal-logo { padding: 10px 12px 4px; }
+.cal-logo-badge {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  background: linear-gradient(135deg, var(--tb-from) 0%, var(--tb-to) 50%, rgba(200,184,248,0.6) 100%);
+  border-top:    1px solid var(--w-light);
+  border-left:   1px solid var(--w-light);
+  border-right:  1px solid var(--w-dark);
+  border-bottom: 1px solid var(--w-dark);
+  padding: 6px 14px 5px;
+  min-width: 88px;
+}
+.cal-logo-dots { display: flex; gap: 4px; margin-bottom: 1px; }
+.cal-logo-dots span {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: rgba(255,255,255,0.40);
+}
+.cal-logo-dots span:first-child { background: rgba(255,255,255,0.95); }
+.cal-logo-dots span:nth-child(2) { background: rgba(200,220,255,0.70); }
+.cal-logo-name {
+  font-family: var(--pixel);
+  font-size: 11px;
+  color: #fff;
+  letter-spacing: 3px;
+  text-shadow: 0 0 10px rgba(160,192,255,0.9), 1px 1px 0 rgba(0,0,0,0.35);
+}
+.cal-logo-sub {
+  font-family: var(--pixel);
+  font-size: 6px;
+  color: rgba(200,220,255,0.80);
+  letter-spacing: 1px;
+}
 
 /* Calendar controls: prev/month/next */
 .calendar-controls {
@@ -2338,7 +2416,7 @@ footer span { color: var(--lav-3); margin: 0 6px; }
 /* Event detail modal (used from calendar page) */
 .event-modal-overlay {
   position: fixed; inset: 0;
-  background: rgba(61,36,102,0.55); z-index: 300;
+  background: rgba(12,20,64,0.55); z-index: 300;
   display: flex; align-items: center; justify-content: center; padding: 20px;
 }
 .event-modal-box {
@@ -2462,7 +2540,7 @@ footer span { color: var(--lav-3); margin: 0 6px; }
   display: none;
   position: fixed;
   inset: 0;
-  background: rgba(61,36,102,0.88);
+  background: rgba(24,36,56,0.88);
   z-index: 500;
   align-items: center;
   justify-content: center;

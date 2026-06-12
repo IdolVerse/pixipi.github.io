@@ -36,7 +36,7 @@ authRouter.post('/login', async (c) => {
     const { username, password } = await c.req.json<any>()
     if (!username || !password) return c.json({ error: 'Username and password required' }, 400)
 
-    const user = await dbFirst(c.env.DB, 'SELECT * FROM users WHERE username = ?', username)
+    const user = await dbFirst(c.env.DB, 'SELECT * FROM users WHERE username = ? OR email = ?', username, username)
     if (!user) return c.json({ error: 'Invalid credentials' }, 401)
 
     const match = await bcrypt.compare(password, user.password as string)

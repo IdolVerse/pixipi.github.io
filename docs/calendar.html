@@ -34,7 +34,11 @@
         <div class="cal-layout">
           <div class="cal-main">
             <div class="cal-logo">
-              <img src="images/logo.jpg" alt="Pixipi" id="calLogoImg">
+              <div class="cal-logo-badge">
+                <div class="cal-logo-dots"><span></span><span></span><span></span></div>
+                <div class="cal-logo-name">PIXIPI</div>
+                <div class="cal-logo-sub">★ EVENTS ★</div>
+              </div>
             </div>
             <table class="calendar-table" id="calendarTable">
               <thead>
@@ -108,8 +112,8 @@
 
     <script>
       const API_URL = location.hostname === 'localhost' || location.hostname === '127.0.0.1'
-        ? 'http://localhost:8787/api'
-        : 'https://api.dolltrap.workers.dev/api';
+        ? 'https://api.cocolee-k2.workers.dev/api'
+        : 'https://api.cocolee-k2.workers.dev/api';
       let memberToken = localStorage.getItem('memberToken');
       let allVideosData = [];
       let allPhotosData = [];

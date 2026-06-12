@@ -5,15 +5,17 @@ compatibility_flags = ["nodejs_compat"]
 
 [[d1_databases]]
 binding = "DB"
-database_name = "dolltrap-db"
-database_id = "63492527-a479-43a1-a18e-0dd48805d1b5"
+database_name = "pixipi-db"
+database_id = "e6e52936-3b48-4d86-8b52-9d07eef0e5cc"
+
+[[r2_buckets]]
+binding = "R2"
+bucket_name = "pixipi-photos"
 
 # Secrets (set via `wrangler secret put <NAME>`):
-#   JWT_SECRET            — same value as current JWT_SECRET
-#   SUPABASE_URL          — same as current SUPABASE_URL
-#   SUPABASE_SERVICE_ROLE_KEY — same as current SUPABASE_SERVICE_ROLE_KEY
-#
-# DATABASE_URL is no longer needed (now using D1)
+#   JWT_SECRET    — JWT signing secret
+#   R2_PUBLIC_URL — public base URL for R2 bucket, e.g. https://media.pixipiexe.com
+#                   (set after enabling public access on the bucket)
 
 [vars]
 NODE_ENV = "production"

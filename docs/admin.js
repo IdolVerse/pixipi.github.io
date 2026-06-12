@@ -3,8 +3,8 @@
 // ============================================================
 
 const API_URL = location.hostname === 'localhost' || location.hostname === '127.0.0.1'
-  ? 'http://localhost:8787/api'
-  : 'https://api.dolltrap.workers.dev/api';
+  ? 'https://api.cocolee-k2.workers.dev/api'
+  : 'https://api.cocolee-k2.workers.dev/api';
 const API_ORIGIN = API_URL.replace('/api', '');
 let authToken = localStorage.getItem('authToken');
 let dashboardShown = false;

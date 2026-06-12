@@ -87,12 +87,12 @@ router.post('/upload-poster', authMiddleware, posterUpload.single('poster'), asy
     const filePath = `posters/${filename}`;
 
     const { error } = await supabase.storage
-      .from('doll-trap')
+      .from('pixipi')
       .upload(filePath, req.file.buffer, { contentType: req.file.mimetype, upsert: false });
 
     if (error) return res.status(500).json({ error: error.message });
 
-    const { data: { publicUrl } } = supabase.storage.from('doll-trap').getPublicUrl(filePath);
+    const { data: { publicUrl } } = supabase.storage.from('pixipi').getPublicUrl(filePath);
     res.json({ url: publicUrl });
   } catch (error) {
     res.status(500).json({ error: error.message });

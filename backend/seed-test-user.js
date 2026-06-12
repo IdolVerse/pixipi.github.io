@@ -10,7 +10,7 @@ const { pool, initDB } = require('./config/database');
 
 const TEST_USER = {
   display_name: 'Test Fan',
-  email: 'test@dolltrap.com',
+  email: 'test@pixipi.com',
   password: 'test1234'
 };
 

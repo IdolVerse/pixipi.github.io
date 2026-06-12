@@ -19,15 +19,15 @@ async function setupBucket() {
     console.log('Existing buckets:', buckets.map(b => b.name));
     
     // Check if bucket exists
-    const bucketExists = buckets.some(b => b.name === 'doll-trap');
+    const bucketExists = buckets.some(b => b.name === 'pixipi');
     
     if (bucketExists) {
-      console.log('✅ Bucket "doll-trap" already exists');
+      console.log('✅ Bucket "pixipi" already exists');
       return;
     }
     
     // Create bucket if it doesn't exist
-    const { data, error } = await supabase.storage.createBucket('doll-trap', {
+    const { data, error } = await supabase.storage.createBucket('pixipi', {
       public: true
     });
     
@@ -36,7 +36,7 @@ async function setupBucket() {
       return;
     }
     
-    console.log('✅ Bucket "doll-trap" created successfully');
+    console.log('✅ Bucket "pixipi" created successfully');
     console.log('Bucket details:', data);
     
   } catch (error) {

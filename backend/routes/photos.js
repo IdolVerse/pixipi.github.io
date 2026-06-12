@@ -7,7 +7,7 @@ const authMiddleware = require('../middleware/auth');
 
 const router = express.Router();
 let hasWarnedAboutLegacyUploads = false;
-const STORAGE_BUCKET = 'doll-trap';
+const STORAGE_BUCKET = 'pixipi';
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_KEY;
 
@@ -131,7 +131,7 @@ router.post('/', authMiddleware, upload.single('photo'), async (req, res) => {
     if (error) {
       console.error('Supabase upload error:', error);
       if (error.message && error.message.includes('not found')) {
-        return res.status(500).json({ error: 'Storage bucket not found. Please create "doll-trap" bucket in Supabase.' });
+        return res.status(500).json({ error: 'Storage bucket not found. Please create "pixipi" bucket in Supabase.' });
       }
       return res.status(500).json({ error: error.message || 'Failed to upload file to storage' });
     }

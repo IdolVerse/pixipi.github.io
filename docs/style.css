@@ -2218,47 +2218,25 @@ footer span { color: var(--lav-3); margin: 0 6px; }
 }
 
 /* cal-main titlebar */
-.cal-main::before {
-  content: '📅 Calendar';
-  display: block;
-  background: linear-gradient(90deg, var(--tb-from), var(--tb-to));
-  font-family: var(--pixel); font-size: 11px; color: #fff;
-  padding: 8px 12px; text-shadow: 1px 1px 0 rgba(0,0,0,0.2);
-}
+.cal-main::before { content: none; }
 
-.cal-logo { padding: 10px 12px 4px; }
-.cal-logo-badge {
-  display: inline-flex;
-  flex-direction: column;
+.cal-titlebar {
+  display: flex;
   align-items: center;
-  gap: 3px;
-  background: linear-gradient(135deg, var(--tb-from) 0%, var(--tb-to) 50%, rgba(200,184,248,0.6) 100%);
-  border-top:    1px solid var(--w-light);
-  border-left:   1px solid var(--w-light);
-  border-right:  1px solid var(--w-dark);
-  border-bottom: 1px solid var(--w-dark);
-  padding: 6px 14px 5px;
-  min-width: 88px;
-}
-.cal-logo-dots { display: flex; gap: 4px; margin-bottom: 1px; }
-.cal-logo-dots span {
-  width: 6px; height: 6px; border-radius: 50%;
-  background: rgba(255,255,255,0.40);
-}
-.cal-logo-dots span:first-child { background: rgba(255,255,255,0.95); }
-.cal-logo-dots span:nth-child(2) { background: rgba(200,220,255,0.70); }
-.cal-logo-name {
+  gap: 8px;
+  background: linear-gradient(90deg, var(--tb-from), var(--tb-to));
+  padding: 5px 10px;
   font-family: var(--pixel);
   font-size: 11px;
   color: #fff;
-  letter-spacing: 3px;
-  text-shadow: 0 0 10px rgba(160,192,255,0.9), 1px 1px 0 rgba(0,0,0,0.35);
+  text-shadow: 1px 1px 0 rgba(0,0,0,0.2);
 }
-.cal-logo-sub {
-  font-family: var(--pixel);
-  font-size: 6px;
-  color: rgba(200,220,255,0.80);
-  letter-spacing: 1px;
+.cal-titlebar-icon {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  image-rendering: pixelated;
+  flex-shrink: 0;
 }
 
 /* Calendar controls: prev/month/next */

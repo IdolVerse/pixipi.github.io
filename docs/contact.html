@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contact - Pixipi</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
       .contact-container {
         margin: 0 auto;
@@ -88,7 +89,11 @@
         border-bottom: 2px solid var(--w-light);
       }
 
-      .icon-email, .icon-ig, .icon-xhs, .icon-yt { background: var(--lav-2); }
+      .contact-card-icon i { font-size: 1.5rem; }
+      .icon-email i { color: var(--lav-5); }
+      .icon-ig i { color: #e1306c; }
+      .icon-xhs i { color: #ff2442; }
+      .icon-yt i { color: #ff0000; }
 
       .contact-card-text {
         display: flex;
@@ -155,7 +160,7 @@
 
         <!-- Email -->
         <a class="contact-card" href="mailto:pixipiexe@gmail.com">
-          <div class="contact-card-icon icon-email">✉️</div>
+          <div class="contact-card-icon icon-email"><i class="fas fa-envelope"></i></div>
           <div class="contact-card-text">
             <span class="contact-card-label">Email</span>
             <span class="contact-card-value">pixipiexe@gmail.com</span>
@@ -165,7 +170,7 @@
 
         <!-- Instagram -->
         <a class="contact-card" href="https://www.instagram.com/pixipi_exe?igsh=MWR5ZDhnNTRvdjA4ZQ==" target="_blank" rel="noopener noreferrer">
-          <div class="contact-card-icon icon-ig">📸</div>
+          <div class="contact-card-icon icon-ig"><i class="fab fa-instagram"></i></div>
           <div class="contact-card-text">
             <span class="contact-card-label">Instagram</span>
             <span class="contact-card-value">@pixipi_exe</span>
@@ -175,7 +180,7 @@
 
         <!-- RedNote -->
         <a class="contact-card" href="https://xhslink.com/m/AtFuH3oz3Lz" target="_blank" rel="noopener noreferrer">
-          <div class="contact-card-icon icon-xhs">📖</div>
+          <div class="contact-card-icon icon-xhs"><i class="fas fa-circle-dot"></i></div>
           <div class="contact-card-text">
             <span class="contact-card-label">RedNote / 小红书</span>
             <span class="contact-card-value">Pixipi</span>
@@ -185,7 +190,7 @@
 
         <!-- YouTube -->
         <a class="contact-card" href="https://youtube.com/@ksm_doll_trap?si=y9Q1hdPEBzB3alXG" target="_blank" rel="noopener noreferrer">
-          <div class="contact-card-icon icon-yt">▶️</div>
+          <div class="contact-card-icon icon-yt"><i class="fab fa-youtube"></i></div>
           <div class="contact-card-text">
             <span class="contact-card-label">YouTube</span>
             <span class="contact-card-value">@ksm_doll_trap</span>

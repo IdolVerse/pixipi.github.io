@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Members - Pixipi</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   </head>
 
   <body>
@@ -114,14 +115,14 @@
           id: 3,
           name: 'SHANI',
           image: 'images/shani-chibi.png',
-          mbti: '',
-          birthday: '',
-          birthdayMonth: null, birthdayDay: null,
+          mbti: 'ENFP',
+          birthday: 'Jul 19',
+          birthdayMonth: 7, birthdayDay: 19,
           color: 'Red',
           colorHex: '#f87171',
           level: '01',
           trainee: true,
-          socials: []
+          socials: [{ icon: '📸', label: 'Instagram', url: 'https://www.instagram.com/shanpig_xy' }]
         },
         {
           id: 4,
@@ -134,6 +135,7 @@
           colorHex: '#fb923c',
           level: '01',
           trainee: true,
+          hidden: true,
           socials: []
         }
       ];
@@ -143,7 +145,7 @@
         const memberGrid = document.getElementById('memberGrid');
         memberGrid.innerHTML = '';
 
-        membersData.forEach(member => {
+        membersData.filter(m => !m.hidden).forEach(member => {
           const memberCard = document.createElement('div');
           memberCard.className = 'member-card';
           memberCard.style.borderColor = member.colorHex;
@@ -171,6 +173,17 @@
       }
 
       // Show member details
+      function socialIcon(platform) {
+        const p = (platform || '').toLowerCase();
+        if (p.includes('instagram')) return '<i class="fab fa-instagram"></i>';
+        if (p.includes('twitter') || p.includes('x.com') || p === 'x') return '<i class="fab fa-x-twitter"></i>';
+        if (p.includes('youtube')) return '<i class="fab fa-youtube"></i>';
+        if (p.includes('tiktok')) return '<i class="fab fa-tiktok"></i>';
+        if (p.includes('twitch')) return '<i class="fab fa-twitch"></i>';
+        if (p.includes('rednote') || p.includes('xiaohongshu')) return '<i class="fas fa-circle-dot"></i>';
+        return '<i class="fas fa-link"></i>';
+      }
+
       function showMemberDetail(member) {
         const detailContent = document.getElementById('memberDetailContent');
         const countdown = member.birthdayMonth ? birthdayCountdown(member.birthdayMonth, member.birthdayDay) : null;
@@ -190,7 +203,7 @@
                 ${member.birthday ? `<p><strong>Birthday:</strong> ${member.birthday} <span class="birthday-countdown">🎂 ${countdown}</span></p>` : ''}
               </div>
               <div class="detail-action-row">
-                ${member.socials?.length ? member.socials.map(s => `<a class="social-link" href="${s.url}" target="_blank" rel="noopener">${s.icon} ${s.label}</a>`).join('') : ''}
+                ${member.socials?.length ? member.socials.map(s => `<a class="social-link" href="${s.url}" target="_blank" rel="noopener">${socialIcon(s.label || s.platform)} ${s.label}</a>`).join('') : ''}
               </div>
             </div>
             <div class="detail-level">Lv ${member.level}</div>

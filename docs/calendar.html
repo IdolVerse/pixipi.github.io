@@ -364,7 +364,7 @@
                 ${event.location ? `<span class="event-item-loc">📍 ${event.location}</span>` : ''}
               </div>
               <div class="event-item-actions">
-                <button class="jump-btn jump-btn-secondary" onclick="event.stopPropagation()">View details →</button>
+                <button class="jump-btn jump-btn-secondary">View details →</button>
               </div>
             </div>
           `).join('');
@@ -429,12 +429,11 @@
                 ${nextEvent.time ? `<span class="event-item-time">⏰ ${nextEvent.time}${nextEvent.end_time ? ` – ${nextEvent.end_time}` : ''}</span>` : ''}
               </div>
               <div class="event-item-actions">
-                <button class="jump-btn jump-btn-secondary" onclick="event.stopPropagation()">View details →</button>
+                <button class="jump-btn jump-btn-secondary">View details →</button>
               </div>
             </div>
           `;
-          document.querySelector('[data-event-key="next"]').addEventListener('click', function(e) {
-            if (e.target.classList.contains('jump-btn')) return;
+          document.querySelector('[data-event-key="next"]').addEventListener('click', function() {
             if (nextEvent && nextEvent.id) {
               window.location.href = `event.html?id=${nextEvent.id}&from=${currentView}`;
             }

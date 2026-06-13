@@ -3,7 +3,12 @@ import bcrypt from 'bcryptjs'
 import { sign } from 'hono/jwt'
 import { dbFirst, dbRun } from '../db'
 import { authMiddleware } from '../middleware/auth'
+import { checkRateLimit } from '../rateLimit'
 import type { HonoEnv } from '../types'
+
+function clientIp(c: any): string {
+  return c.req.header('CF-Connecting-IP') || c.req.header('X-Forwarded-For') || 'unknown'
+}
 
 export const authRouter = new Hono<HonoEnv>()
 
@@ -33,6 +38,10 @@ authRouter.post('/register', async (c) => {
 
 authRouter.post('/login', async (c) => {
   try {
+    const ip = clientIp(c)
+    const rl = await checkRateLimit(c.env.DB, `admin-login:${ip}`, 10, 900) // 10 per 15 min
+    if (!rl.allowed) return c.json({ error: 'Too many login attempts. Please try again later.' }, 429)
+
     const { username, password } = await c.req.json<any>()
     if (!username || !password) return c.json({ error: 'Username and password required' }, 400)
 

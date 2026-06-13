@@ -355,7 +355,7 @@ nav #loginNavBtn:hover {
   border-bottom: 3px solid rgba(80,100,160,0.5);
   box-shadow: 2px 2px 8px rgba(0,0,0,0.2);
 }
-.hero-photo-tile img { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; }
+.hero-photo-tile img { width: 100%; height: auto; display: block; }
 
 .hero {
   height: 100vh;
@@ -702,7 +702,7 @@ nav #loginNavBtn:hover {
   border-left:   2px solid var(--w-light);
   border-right:  2px solid var(--w-dark);
   border-bottom: 2px solid var(--w-dark);
-  display: block; margin-bottom: 16px;
+  display: block; margin: 0 auto 16px;
 }
 
 .ue-countdown { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
@@ -2520,11 +2520,21 @@ footer span { color: var(--lav-3); margin: 0 6px; }
 @media (max-width: 600px) {
   nav a { font-size: 12px; padding: 5px 8px; }
   .hero-logo { font-size: clamp(26px, 8vw, 44px); }
+  .hero-window { width: 94vw; }
+  .hero-window-body { padding: 24px 20px 28px; gap: 16px; }
+  .hero-photo-tile { width: clamp(80px, 28vw, 130px); }
   .member-card { width: 120px; }
   .member-card img { width: 80px; height: 80px; }
   .detail-header { flex-direction: column; }
   .detail-image { width: 100px; height: 100px; }
   .about-card { padding: 28px 16px 20px; }
+  .ue-meta { font-size: 13px; gap: 8px; }
+  .ue-desc { font-size: 13px; }
+  .ue-cd-box { min-width: 46px; padding: 6px 8px; }
+  .ue-cd-box span { font-size: 20px; }
+  .ue-cd-box label { font-size: 9px; }
+  .ue-countdown { gap: 5px; }
+  #nextPerformance { padding: 14px 14px 18px; }
 }
 
 /* ========================================
@@ -2933,11 +2943,26 @@ footer span { color: var(--lav-3); margin: 0 6px; }
 }
 
 /* ── Photo heart/save button ── */
+.gallery-folder-item {
+  position: relative;
+  overflow: hidden;
+}
 .gallery-folder-item img {
-  aspect-ratio: 4 / 3;
-  object-fit: cover;
   width: 100%;
+  height: auto;
   display: block;
+  transition: transform 0.2s;
+}
+.gallery-folder-item:hover img { transform: scale(1.04); }
+.gallery-folder-item .photo-member {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  margin: 0;
+  padding: 20px 8px 7px;
+  background: linear-gradient(to top, rgba(20,20,40,0.78) 0%, transparent 100%);
+  font-family: var(--pixel); font-size: 8px;
+  color: #fff; text-shadow: 1px 1px 2px rgba(0,0,0,0.6);
+  text-align: center;
 }
 
 .photo-heart-btn {

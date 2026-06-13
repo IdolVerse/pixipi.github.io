@@ -4,7 +4,12 @@ import { sign } from 'hono/jwt'
 import { dbFirst, dbAll, dbRun, inClause } from '../db'
 import { memberAuthMiddleware } from '../middleware/memberAuth'
 import { authMiddleware } from '../middleware/auth'
+import { checkRateLimit } from '../rateLimit'
 import type { HonoEnv } from '../types'
+
+function clientIp(c: any): string {
+  return c.req.header('CF-Connecting-IP') || c.req.header('X-Forwarded-For') || 'unknown'
+}
 
 export const membersRouter = new Hono<HonoEnv>()
 
@@ -36,6 +41,10 @@ membersRouter.post('/register', async (c) => {
 
 membersRouter.post('/login', async (c) => {
   try {
+    const ip = clientIp(c)
+    const rl = await checkRateLimit(c.env.DB, `member-login:${ip}`, 10, 900) // 10 per 15 min
+    if (!rl.allowed) return c.json({ error: 'Too many login attempts. Please try again later.' }, 429)
+
     const { email, password } = await c.req.json<any>()
     if (!email || !password) return c.json({ error: 'Email and password required' }, 400)
 
@@ -118,6 +127,10 @@ async function sendEmail(apiKey: string, to: string, subject: string, html: stri
 
 membersRouter.post('/magic/send', async (c) => {
   try {
+    const ip = clientIp(c)
+    const rl = await checkRateLimit(c.env.DB, `magic-send:${ip}`, 3, 3600) // 3 per hour
+    if (!rl.allowed) return c.json({ error: 'Too many requests. Please wait before requesting another verification email.' }, 429)
+
     const { email, display_name, password, email_updates } = await c.req.json<any>()
     if (!email) return c.json({ error: 'Email required' }, 400)
     if (!display_name) return c.json({ error: 'Display name required' }, 400)
@@ -158,6 +171,10 @@ membersRouter.post('/magic/send', async (c) => {
 
 membersRouter.post('/magic/resend', async (c) => {
   try {
+    const ip = clientIp(c)
+    const rl = await checkRateLimit(c.env.DB, `magic-resend:${ip}`, 5, 3600) // 5 per hour
+    if (!rl.allowed) return c.json({ error: 'Too many requests. Please wait before resending.' }, 429)
+
     const { email } = await c.req.json<any>()
     if (!email) return c.json({ error: 'Email required' }, 400)
 

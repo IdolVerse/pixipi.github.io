@@ -125,3 +125,12 @@ CREATE TABLE IF NOT EXISTS magic_tokens (
   expires_at DATETIME NOT NULL,
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
+
+-- Rate limiting (keyed by "endpoint:ip", sliding window via unix timestamp)
+-- Migration: run once on existing DB
+-- npx wrangler d1 execute pixipi-db --remote --command="CREATE TABLE IF NOT EXISTS rate_limits (key TEXT PRIMARY KEY, count INTEGER NOT NULL DEFAULT 0, window_start INTEGER NOT NULL);"
+CREATE TABLE IF NOT EXISTS rate_limits (
+  key          TEXT    PRIMARY KEY,
+  count        INTEGER NOT NULL DEFAULT 0,
+  window_start INTEGER NOT NULL
+);

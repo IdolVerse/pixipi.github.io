@@ -738,7 +738,7 @@
         // Actions row: event link + add to calendar
         const actions = [];
         if (ev.link) {
-          actions.push(`<a class="ep-action-btn primary" href="${ev.link}" target="_blank" rel="noopener noreferrer">🔗 Event Link →</a>`);
+          actions.push(`<a class="ep-action-btn" href="${ev.link}" target="_blank" rel="noopener noreferrer">🔗 Event Link →</a>`);
         }
         if (ev.date) {
           actions.push(`<button class="ep-action-btn" onclick="addToCalendar()">📅 Add to Calendar</button>`);
